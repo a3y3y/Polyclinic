@@ -33,19 +33,14 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "passport_id")
     private Passport passport;
-
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
 
     @OneToMany(mappedBy = "patient")
     private Set<Ticket> tickets;
 
-    @OneToMany(mappedBy = "doctor")
-    private Set<Ticket> ticketsForDoctor;
+
 
     @OneToOne
     @JoinColumn(name = "doctor_info_id")
@@ -55,7 +50,19 @@ public class User implements UserDetails {
     @JoinColumn(name = "medical_card_id")
     private MedicalCard medicalCard;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "registration_id")
+    private Address registrationAddress;
+
     private boolean active;
+
+    public Address getRegistrationAddress() {
+        return registrationAddress;
+    }
+
+    public void setRegistrationAddress(Address registrationAddress) {
+        this.registrationAddress = registrationAddress;
+    }
 
     public MedicalCard getMedicalCard() {
         return medicalCard;
@@ -94,14 +101,6 @@ public class User implements UserDetails {
         this.tickets = tickets;
     }
 
-    public Set<Ticket> getTicketsForDoctor() {
-        return ticketsForDoctor;
-    }
-
-    public void setTicketsForDoctor(Set<Ticket> ticketsForDoctor) {
-        this.ticketsForDoctor = ticketsForDoctor;
-    }
-
     public int getId() {
         return id;
     }
@@ -120,14 +119,6 @@ public class User implements UserDetails {
 
     public void setPassport(Passport passport) {
         this.passport = passport;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public String geteMail() {
@@ -205,22 +196,14 @@ public class User implements UserDetails {
                 ", roles=" + roles +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", eMail='" + eMail + '\'' +
-                ", password='" + password + '\'' +
-                ", passport=" + passport +
-                ", address=" + address +
-                ", tickets=" + tickets +
-                ", ticketsForDoctor=" + ticketsForDoctor +
-                ", doctor=" + doctor +
-                ", medicalCard=" + medicalCard +
-                ", active=" + active +
-                '}';
+                ", password='" + password + '\'';
     }
 
     @Override
     public int hashCode()
     {
         return Objects.hash(getId(), getPhoneNumber(), getPassword(), geteMail(), isActive()
-                , getPassport(), getAddress(), getRoles(), getTickets(), getTicketsForDoctor(), getDoctor()
+                , getPassport(), getRoles(), getTickets(), getDoctor()
         ,getMedicalCard());
     }
 }

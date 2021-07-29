@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,11 +81,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/resources/img/**","/registration").permitAll()
+                .antMatchers("/**","/resources/img/**","/registration").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/signIn")
                 .defaultSuccessUrl("/").failureUrl("/signIn?error").permitAll()
-                .and().logout().logoutSuccessUrl("/").permitAll();
+                .and().logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/").permitAll();
     }
 
 

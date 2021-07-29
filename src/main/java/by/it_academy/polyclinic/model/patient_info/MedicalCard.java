@@ -14,11 +14,15 @@ public class MedicalCard {
 
     private boolean healthful;
 
-    @OneToOne(mappedBy = "medicalCard")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "medicalCard")
     private User user;
 
-    @OneToMany(mappedBy = "medicalCard")
-    private Set<MedicalProcedure> procedures;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "medicalCard")
+    private Set<MedicalNote> notes;
+
+    public void addNote(MedicalNote note){
+        this.notes.add(note);
+    }
 
     public int getId() {
         return id;
@@ -44,11 +48,11 @@ public class MedicalCard {
         this.user = user;
     }
 
-    public Set<MedicalProcedure> getProcedures() {
-        return procedures;
+    public Set<MedicalNote> getNotes() {
+        return notes;
     }
 
-    public void setProcedures(Set<MedicalProcedure> procedures) {
-        this.procedures = procedures;
+    public void setNotes(Set<MedicalNote> notes) {
+        this.notes = notes;
     }
 }

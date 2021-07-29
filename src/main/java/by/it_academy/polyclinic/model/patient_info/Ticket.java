@@ -1,5 +1,6 @@
 package by.it_academy.polyclinic.model.patient_info;
 
+import by.it_academy.polyclinic.model.doctor_info.DoctorInfo;
 import by.it_academy.polyclinic.model.user_Info.User;
 
 import javax.persistence.*;
@@ -22,7 +23,7 @@ public class Ticket implements Comparable<Ticket>{
 
     @ManyToOne
     @JoinColumn(name = "doctor")
-    private User doctor;
+    private DoctorInfo doctor;
 
     public long getId() {
         return id;
@@ -64,11 +65,11 @@ public class Ticket implements Comparable<Ticket>{
         this.patient = patient;
     }
 
-    public User getDoctor() {
+    public DoctorInfo getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(User doctor) {
+    public void setDoctor(DoctorInfo doctor) {
         this.doctor = doctor;
     }
 

@@ -1,9 +1,10 @@
 package by.it_academy.polyclinic.service;
 
+import by.it_academy.polyclinic.model.user_Info.Passport;
+import by.it_academy.polyclinic.model.user_Info.Role;
 import by.it_academy.polyclinic.model.user_Info.User;
 import by.it_academy.polyclinic.service.api.IUserService;
 import by.it_academy.polyclinic.storage.IUserRepository;
-import by.it_academy.polyclinic.model.user_Info.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,24 +29,22 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public List<User> getAll() {
-        return null;
-    }
-
-    @Override
     public User getUserByEmail(String eMail) {
         return userRepository.findByeMail(eMail);
     }
 
-    public boolean checkPasswordAndLogin(String eMail, String password){
-       List<User> users = userRepository.findAllByeMail(eMail);
-       if(users.isEmpty()){
-           return false;
-       }
-       if(users.get(0).getPassword().equals(password)){
-           return true;
-       }
-       return false;
+    public User getUserByPassport(Passport passport){
+        return userRepository.findByPassport(passport);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User addUser(User user) {
+        return userRepository.save(user);
     }
 
     public User registerUser(String eMail, String password){

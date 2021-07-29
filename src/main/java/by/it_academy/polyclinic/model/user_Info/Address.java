@@ -1,5 +1,8 @@
 package by.it_academy.polyclinic.model.user_Info;
 
+
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,24 +19,21 @@ public class Address {
     private String city;
     private String street;
     @Column(name = "street_number")
-    private int streetNumber;
-    @Column(name = "house_number")
-    private int houseNumber;
+    private String houseNumber;
     @Column(name = "apartment_number")
-    private int apartmentNumber;
+    private String apartmentNumber;
+    private String index;
 
-    @OneToMany(mappedBy = "address")
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "registrationAddress")
     private List<User> users;
 
-    @OneToMany(mappedBy = "registrationAddress")
-    private List<Passport> passports;
-
-    public List<Passport> getPassports() {
-        return passports;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setPassports(List<Passport> passports) {
-        this.passports = passports;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public int getId() {
@@ -76,35 +76,42 @@ public class Address {
         this.street = street;
     }
 
-    public int getStreetNumber() {
-        return streetNumber;
-    }
-
-    public void setStreetNumber(int streetNumber) {
-        this.streetNumber = streetNumber;
-    }
-
-    public int getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
 
-    public int getApartmentNumber() {
+    public String getApartmentNumber() {
         return apartmentNumber;
     }
 
-    public void setApartmentNumber(int apartmentNumber) {
+    public void setApartmentNumber(String apartmentNumber) {
         this.apartmentNumber = apartmentNumber;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public String getIndex() {
+        return index;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", country='" + country + '\'' +
+                ", region='" + region + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", apartmentNumber='" + apartmentNumber + '\'' +
+                ", index='" + index + '\'' +
+                ", users=" + users +
+                '}';
     }
 }

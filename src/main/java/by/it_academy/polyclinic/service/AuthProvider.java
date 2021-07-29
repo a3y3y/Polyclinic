@@ -2,6 +2,7 @@ package by.it_academy.polyclinic.service;
 
 
 import by.it_academy.polyclinic.model.user_Info.User;
+import by.it_academy.polyclinic.service.api.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,13 +19,14 @@ import java.util.Collection;
 public class AuthProvider implements AuthenticationProvider
 {
 	@Autowired
-	private UserService userService;
-
-	public AuthProvider(UserService userService) {
-		this.userService = userService;}
+	private IUserService userService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	public AuthProvider(IUserService userService) {
+		this.userService = userService;
+	}
 
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException
 	{

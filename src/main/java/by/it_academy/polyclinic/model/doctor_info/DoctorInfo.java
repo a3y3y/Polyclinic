@@ -1,11 +1,13 @@
 package by.it_academy.polyclinic.model.doctor_info;
 
+import by.it_academy.polyclinic.model.patient_info.Ticket;
 import by.it_academy.polyclinic.model.user_Info.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "doctor_info")
@@ -37,6 +39,17 @@ public class DoctorInfo {
             joinColumns = { @JoinColumn(name = "doctor_info_id") },
             inverseJoinColumns = { @JoinColumn(name = "department_id") })
     private List<Department> departments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "doctor")
+    private Set<Ticket> ticketsForDoctor;
+
+    public Set<Ticket> getTicketsForDoctor() {
+        return ticketsForDoctor;
+    }
+
+    public void setTicketsForDoctor(Set<Ticket> ticketsForDoctor) {
+        this.ticketsForDoctor = ticketsForDoctor;
+    }
 
     public int getId() {
         return id;

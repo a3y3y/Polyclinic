@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta name="theme-color" content="#7952b3">
+    <sec:authentication var="error" property="error" />
     <style>
         .block{
     width:200px;
@@ -31,15 +32,15 @@
     <form action="${pageContext.request.contextPath}/signIn" method="post">
 
         <c:choose>
-            <c:when test="${requestScope.error}">
-                <p style="color:red;">${requestScope.message}</p>
+            <c:when test="${error}">
+                <p style="color:red;">Не верный e-mail или пароль</p>
             </c:when>
             <c:otherwise>
                 <h1 class="h3 mb-3 fw-normal">Введи в меня</h1>
             </c:otherwise>
         </c:choose>
         <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" name="username">
+            <input type="email" class="form-control" id="floatingInput" name="username" >
             <label for="floatingInput">Email адрес</label>
         </div>
         <div class="form-floating">

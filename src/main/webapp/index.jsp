@@ -24,9 +24,14 @@
     <p>Поликлиника</p>
 
     <sec:authorize access="isAuthenticated()">
-        <button type="button" class="btn btn-primary"
-                onclick="location.href='${pageContext.request.contextPath}/cabinet';">Личный кабинет
-        </button>
+        <div>
+            <button type="button" class="btn btn-primary"
+                    onclick="location.href='${pageContext.request.contextPath}/cabinet';">Личный кабинет
+            </button>
+            <button type="button" class="btn btn-primary"
+                    onclick="location.href='${pageContext.request.contextPath}/logout';">Выйти
+            </button>
+        </div>
     </sec:authorize>
     <sec:authorize access="!isAuthenticated()">
         <div>
@@ -38,7 +43,8 @@
             </button>
         </div>
     </sec:authorize>
-
 </nav>
+
+
 </body>
 </html>

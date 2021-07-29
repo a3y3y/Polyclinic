@@ -4,16 +4,16 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "medical_procedure")
-public class MedicalProcedure implements Comparable<MedicalProcedure>{
+@Table(name = "medical_services")
+public class MedicalNote implements Comparable<MedicalNote>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Enumerated(EnumType.STRING)
-    private ProcedureType type;
+    private MedicalNoteType type;
     private String name;
     private String illness;
-    private Date date;
+    private String date;
     private String description;
 
     @ManyToOne
@@ -44,11 +44,11 @@ public class MedicalProcedure implements Comparable<MedicalProcedure>{
         this.id = id;
     }
 
-    public ProcedureType getType() {
+    public MedicalNoteType getType() {
         return type;
     }
 
-    public void setType(ProcedureType type) {
+    public void setType(MedicalNoteType type) {
         this.type = type;
     }
 
@@ -60,11 +60,11 @@ public class MedicalProcedure implements Comparable<MedicalProcedure>{
         this.name = name;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -77,7 +77,7 @@ public class MedicalProcedure implements Comparable<MedicalProcedure>{
     }
 
     @Override
-    public int compareTo(MedicalProcedure o) {
+    public int compareTo(MedicalNote o) {
        return this.date.compareTo(o.getDate());
     }
 }

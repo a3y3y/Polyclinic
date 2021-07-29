@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "passports")
-public class Passport {
+public class Passport implements Comparable<Passport>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int Id;
@@ -21,18 +21,16 @@ public class Passport {
     private String personalId;
     private String nationality;
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    private String dateOfBirth;
     private String sex;
     @Column(name = "issue_date")
-    private Date issueDate;
+    private String issueDate;
     @Column(name = "expire_date")
-    private Date expireDate;
+    private String expireDate;
 
-    @ManyToOne
-    @JoinColumn(name = "registration_id")
-    private Address registrationAddress;
 
-    @OneToOne(mappedBy = "passport")
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "passport")
     private User user;
 
     public int getId() {
@@ -99,12 +97,28 @@ public class Passport {
         this.nationality = nationality;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
+    }
+
+    public String getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(String expireDate) {
+        this.expireDate = expireDate;
     }
 
     public String getSex() {
@@ -115,27 +129,31 @@ public class Passport {
         this.sex = sex;
     }
 
-    public Date getIssueDate() {
-        return issueDate;
+    @Override
+    public int compareTo(Passport o) {
+        return this.lastName.compareTo(o.getLastName());
     }
 
-    public void setIssueDate(Date issueDate) {
-        this.issueDate = issueDate;
+    public String getPassportInfo() {
+        return lastName + " " + firstName + " " + patronymic + " " + number;
     }
 
-    public Date getExpireDate() {
-        return expireDate;
-    }
-
-    public void setExpireDate(Date expireDate) {
-        this.expireDate = expireDate;
-    }
-
-    public Address getRegistrationAddress() {
-        return registrationAddress;
-    }
-
-    public void setRegistrationAddress(Address registrationAddress) {
-        this.registrationAddress = registrationAddress;
+    @Override
+    public String toString() {
+        return "Passport{" +
+                "Id=" + Id +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", codeOfIssuingState='" + codeOfIssuingState + '\'' +
+                ", number='" + number + '\'' +
+                ", personalId='" + personalId + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", sex='" + sex + '\'' +
+                ", issueDate=" + issueDate +
+                ", expireDate=" + expireDate +
+                ", user=" + user +
+                '}';
     }
 }

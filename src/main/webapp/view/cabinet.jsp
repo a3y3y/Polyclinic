@@ -12,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta name="theme-color" content="#7952b3">
+    <sec:authentication var="user" property="principal" />
     <style>
         .block{
     width:200px;
@@ -29,7 +30,7 @@
 </head>
 <body class="text-center">
 <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">Мой кабинет</a>
+    <a class="navbar-brand" href="${pageContext.request.contextPath}/">На главную</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -37,7 +38,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">Моя карта</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/medical_card">Моя карта</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Анализы</a>
@@ -47,6 +48,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Личные данные</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация пользователя</a>
             </li>
         </ul>
     </div>
@@ -63,23 +67,5 @@
 </sec:authorize>
 
 
-<div class="block">
-    <c:choose>
-        <c:when test="${role eq 'PATIENT'}">
-            <p>Привет</p>
-        </c:when>
-
-        <c:when test="${role eq 'ADMIN'}">
-            <p>Привет Админ</p>
-        </c:when>
-
-        <c:when test="${role eq 'REGISTRATION_MANAGER'}">
-            <p>Привет Админ</p>
-        </c:when>
-        <c:otherwise>
-
-        </c:otherwise>
-    </c:choose>
-</div>
 </body>
 </html>
