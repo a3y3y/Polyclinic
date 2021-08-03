@@ -40,17 +40,6 @@ public class DoctorInfo {
             inverseJoinColumns = { @JoinColumn(name = "department_id") })
     private List<Department> departments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "doctor")
-    private Set<Ticket> ticketsForDoctor;
-
-    public Set<Ticket> getTicketsForDoctor() {
-        return ticketsForDoctor;
-    }
-
-    public void setTicketsForDoctor(Set<Ticket> ticketsForDoctor) {
-        this.ticketsForDoctor = ticketsForDoctor;
-    }
-
     public int getId() {
         return id;
     }

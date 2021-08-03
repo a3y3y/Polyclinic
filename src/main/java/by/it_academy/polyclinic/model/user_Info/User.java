@@ -7,9 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -35,12 +33,15 @@ public class User implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "passport_id")
+
     private Passport passport;
 
-    @OneToMany(mappedBy = "patient")
-    private Set<Ticket> tickets;
-
-
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "ticket_user",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "ticket_id") })
+    private List<Ticket> tickets = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "doctor_info_id")
@@ -93,13 +94,6 @@ public class User implements UserDetails {
         this.doctor = doctor;
     }
 
-    public Set<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(Set<Ticket> tickets) {
-        this.tickets = tickets;
-    }
 
     public int getId() {
         return id;
@@ -196,14 +190,21 @@ public class User implements UserDetails {
                 ", roles=" + roles +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", eMail='" + eMail + '\'' +
-                ", password='" + password + '\'';
+                ", password='" + password + '\'' +
+                ", passport=" + passport +
+                ", tickets=" + tickets +
+                ", doctor=" + doctor +
+                ", medicalCard=" + medicalCard +
+                ", registrationAddress=" + registrationAddress +
+                ", active=" + active +
+                '}';
     }
 
     @Override
     public int hashCode()
     {
         return Objects.hash(getId(), getPhoneNumber(), getPassword(), geteMail(), isActive()
-                , getPassport(), getRoles(), getTickets(), getDoctor()
+                , getPassport(), getRoles(), getDoctor()
         ,getMedicalCard());
     }
 }

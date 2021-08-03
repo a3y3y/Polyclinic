@@ -1,7 +1,9 @@
 package by.it_academy.polyclinic.service;
 
 import by.it_academy.polyclinic.model.user_Info.Passport;
+import by.it_academy.polyclinic.model.user_Info.User;
 import by.it_academy.polyclinic.service.api.IPassportService;
+import by.it_academy.polyclinic.service.api.IUserService;
 import by.it_academy.polyclinic.storage.IPassportRepository;
 
 import java.util.List;
@@ -21,12 +23,48 @@ public class PassportService implements IPassportService {
     }
 
     @Override
-    public void addPassport(Passport passport) {
-        passportRepository.save(passport);
+    public Passport addPassport(Passport passport, int userId) {
+        return passportRepository.save(passport);
     }
 
     @Override
-    public List<Passport> getAllPassports() {
+    public List<Passport> getAll() {
        return passportRepository.findAll();
+    }
+
+    @Override
+    public Passport getPassportById(int id) {
+        return passportRepository.findById(id);
+    }
+
+    @Override
+    public boolean update(Passport passport, int id) {
+        Passport passportNew = passportRepository.findById(id);
+        passportNew.setSex(passport.getSex());
+        passportNew.setExpireDate(passport.getExpireDate());
+        passportNew.setCodeOfIssuingState(passport.getCodeOfIssuingState());
+        passportNew.setIssueDate(passport.getIssueDate());
+        passportNew.setNumber(passport.getNumber());
+        passportNew.setPatronymic(passport.getPatronymic());
+        passportNew.setNationality(passport.getNationality());
+        passportNew.setPersonalId(passport.getPersonalId());
+        passportNew.setDateOfBirth(passport.getDateOfBirth());
+        passportNew.setLastName(passport.getLastName());
+        passportNew.setFirstName(passport.getFirstName());
+        Passport passportSaved = passportRepository.save(passportNew);
+        if(passportSaved.equals(passportNew)){
+            return true;
+        } else return false;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        Passport passport = passportRepository.findById(id);
+        if (passport == null) {
+            return false;
+        } else {
+            passportRepository.delete(passport);
+            return true;
+        }
     }
 }

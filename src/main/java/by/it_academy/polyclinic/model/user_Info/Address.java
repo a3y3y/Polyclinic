@@ -1,10 +1,11 @@
 package by.it_academy.polyclinic.model.user_Info;
 
 
-import org.hibernate.annotations.Cascade;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "addresses")
@@ -24,8 +25,11 @@ public class Address {
     private String apartmentNumber;
     private String index;
 
+    @Transient
+    private int userId;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "registrationAddress")
+    @JsonIgnore
     private List<User> users;
 
     public List<User> getUsers() {
@@ -34,6 +38,14 @@ public class Address {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getId() {
@@ -110,8 +122,20 @@ public class Address {
                 ", street='" + street + '\'' +
                 ", houseNumber='" + houseNumber + '\'' +
                 ", apartmentNumber='" + apartmentNumber + '\'' +
-                ", index='" + index + '\'' +
-                ", users=" + users +
+                ", index='" + index +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return id == address.id && Objects.equals(country, address.country) && Objects.equals(region, address.region) && Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(houseNumber, address.houseNumber) && Objects.equals(apartmentNumber, address.apartmentNumber) && Objects.equals(index, address.index);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, country, region, city, street, houseNumber, apartmentNumber, index);
     }
 }

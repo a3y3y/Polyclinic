@@ -11,8 +11,11 @@ public interface IUserService {
     User getUserByEmail(String eMail);
     User registerUser(String eMail, String password);
     User getUserByPassport(Passport passport);
+    User getUserById(int id);
     List<User> getAll();
     User addUser(User user);
+    boolean update(User user, int id);
+    boolean delete(int id);
 
 }
 

@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface IPassportRepository extends JpaRepository<Passport, Integer> {
     Passport findByLastNameAndFirstNameAndPatronymicAndNumber(String lastName, String firstName,
                                                      String patronymic, String number);
+    Passport findById(int id);
 
 }

@@ -40,7 +40,7 @@ public class ValidationController {
         user.setPhoneNumber(userData.getPhoneNumber());
         user.setRegistrationAddress(addressData);
         user.setPassport(passportData);
-        userService.addUser(user);
+        userService.update(user, user.getId());
         return "validate";
     }
 

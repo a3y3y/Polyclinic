@@ -21,21 +21,21 @@ public class UserController {
         return "registration";
     }
 
-//    @PostMapping("/registration")
-//    public String userRegistration(@RequestParam(name = "eMail") String email,
-//                                   @RequestParam(name = "password") String password,
-//                                   HttpServletRequest req){
-//        try {
-//            User user = userService.registerUser(email, password);
-////            req.setAttribute("username", user.geteMail());
-////            req.setAttribute("password", user.getPassword());
-//            return "redirect: " + req.getContextPath() + "/signIn";
-//        } catch (IllegalArgumentException e) {
-//            req.setAttribute("error", true);
-//            req.setAttribute("message", e.getMessage());
-//            return "registration";
-//        }
-//    }
+    @PostMapping("/registration")
+    public String userRegistration(@RequestParam(name = "eMail") String email,
+                                   @RequestParam(name = "password") String password,
+                                   HttpServletRequest req){
+        try {
+            User user = userService.registerUser(email, password);
+//            req.setAttribute("username", user.geteMail());
+//            req.setAttribute("password", user.getPassword());
+            return "redirect: " + req.getContextPath() + "/signIn";
+        } catch (IllegalArgumentException e) {
+            req.setAttribute("error", true);
+            req.setAttribute("message", e.getMessage());
+            return "registration";
+        }
+    }
 
     @GetMapping("/signIn")
     public String getSignInPage(){
@@ -46,5 +46,8 @@ public class UserController {
     public String getUserCabinet(){
         return "cabinet";
     }
+
+    @GetMapping("/cabinet/users")
+    public String getUsers(){return "users";}
 
 }

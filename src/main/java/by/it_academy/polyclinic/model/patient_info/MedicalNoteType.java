@@ -1,5 +1,7 @@
 package by.it_academy.polyclinic.model.patient_info;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,5 +26,8 @@ public enum MedicalNoteType {
             }
         return names;
     }
-
+    @JsonValue
+    public String getName() {
+        return name;
+    }
 }

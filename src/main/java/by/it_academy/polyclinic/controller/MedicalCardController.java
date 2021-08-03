@@ -38,7 +38,7 @@ public class MedicalCardController {
 
     @GetMapping("/medical_card")
     public String getPage(Principal principal, Model model){
-        model.addAttribute("passports", passportService.getAllPassports());
+        model.addAttribute("passports", passportService.getAll());
         return "medical_card";
     }
 
@@ -69,7 +69,7 @@ public class MedicalCardController {
 
     @GetMapping("/new_medical_card")
     public String getMedPage(Principal principal, Model model){
-        model.addAttribute("passports", passportService.getAllPassports());
+        model.addAttribute("passports", passportService.getAll());
         return "medical_card";
     }
 

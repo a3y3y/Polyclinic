@@ -38,6 +38,11 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
+    public User getUserById(int id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
     public List<User> getAll() {
         return userRepository.findAll();
     }
@@ -46,6 +51,32 @@ public class UserService implements IUserService, UserDetailsService {
     public User addUser(User user) {
         return userRepository.save(user);
     }
+
+    @Override
+    public boolean update(User user, int id) {
+        User userNew = userRepository.findById(id);
+        userNew.setPassword(user.getPassword());
+        userNew.setPhoneNumber(user.getPhoneNumber());
+        userNew.seteMail(userNew.geteMail());
+        userNew.setPassport(user.getPassport());
+        userNew.setRegistrationAddress(user.getRegistrationAddress());
+        User userSaved = userRepository.save(userNew);
+        if(userSaved.equals(userNew)){
+            return true;
+        } else return false;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        User user = userRepository.findById(id);
+        if(user == null){
+            return false;
+        } else {
+            userRepository.delete(user);
+            return true;
+        }
+    }
+
 
     public User registerUser(String eMail, String password){
         User user = new User();

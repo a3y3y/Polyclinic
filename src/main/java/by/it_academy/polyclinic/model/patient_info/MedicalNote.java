@@ -1,5 +1,7 @@
 package by.it_academy.polyclinic.model.patient_info;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -16,9 +18,21 @@ public class MedicalNote implements Comparable<MedicalNote>{
     private String date;
     private String description;
 
+    @Transient
+    private int cardId;
+
     @ManyToOne
     @JoinColumn(name = "medical_card_id")
+    @JsonIgnore
     private MedicalCard medicalCard;
+
+    public int getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(int cardId) {
+        this.cardId = cardId;
+    }
 
     public String getIllness() {
         return illness;
@@ -79,5 +93,18 @@ public class MedicalNote implements Comparable<MedicalNote>{
     @Override
     public int compareTo(MedicalNote o) {
        return this.date.compareTo(o.getDate());
+    }
+
+    @Override
+    public String toString() {
+        return "MedicalNote{" +
+                "id=" + id +
+                ", type=" + type +
+                ", name='" + name + '\'' +
+                ", illness='" + illness + '\'' +
+                ", date='" + date + '\'' +
+                ", description='" + description + '\'' +
+                ", cardId=" + cardId +
+                '}';
     }
 }

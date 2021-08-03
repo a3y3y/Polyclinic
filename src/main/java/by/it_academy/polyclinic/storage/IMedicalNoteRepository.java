@@ -8,4 +8,5 @@ import java.util.Set;
 
 public interface IMedicalNoteRepository extends JpaRepository<MedicalNote, Long> {
     Set<MedicalNote> findAllByMedicalCard(MedicalCard medicalCard);
+    MedicalNote findById(long id);
 }

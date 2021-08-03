@@ -1,11 +1,13 @@
 package by.it_academy.polyclinic.model.user_Info;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "passports")
-public class Passport implements Comparable<Passport>{
+public class Passport implements Comparable<Passport> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int Id;
@@ -28,10 +30,28 @@ public class Passport implements Comparable<Passport>{
     @Column(name = "expire_date")
     private String expireDate;
 
+    @Transient
+    private int userId;
 
-
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "passport")
+    @OneToOne(mappedBy = "passport")
+    @JsonIgnore
     private User user;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getId() {
         return Id;
@@ -134,6 +154,7 @@ public class Passport implements Comparable<Passport>{
         return this.lastName.compareTo(o.getLastName());
     }
 
+    @JsonIgnore
     public String getPassportInfo() {
         return lastName + " " + firstName + " " + patronymic + " " + number;
     }
@@ -149,11 +170,32 @@ public class Passport implements Comparable<Passport>{
                 ", number='" + number + '\'' +
                 ", personalId='" + personalId + '\'' +
                 ", nationality='" + nationality + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", sex='" + sex + '\'' +
-                ", issueDate=" + issueDate +
-                ", expireDate=" + expireDate +
-                ", user=" + user +
+                ", issueDate='" + issueDate + '\'' +
+                ", expireDate='" + expireDate + '\'' +
+                ", userId=" + userId +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o)
+        {
+            if(this == o) return true;
+            if(o == null || getClass() != o.getClass()) return false;
+            Passport passport = (Passport) o;
+            return  Objects.equals(getId(), passport.getId()) &&
+                    Objects.equals(getCodeOfIssuingState(), passport.getCodeOfIssuingState()) &&
+                    Objects.equals(getDateOfBirth(), passport.getDateOfBirth()) &&
+                    Objects.equals(getExpireDate(), passport.getExpireDate()) &&
+                    Objects.equals(getFirstName(), passport.getFirstName()) &&
+                    Objects.equals(getIssueDate(), passport.getIssueDate()) &&
+                    Objects.equals(getLastName(), passport.getLastName()) &&
+                    Objects.equals(getNationality(), passport.getNationality()) &&
+                    Objects.equals(getNumber(), passport.getNumber()) &&
+                    Objects.equals(getPatronymic(), passport.getPatronymic()) &&
+                    Objects.equals(getPersonalId(), passport.getPersonalId()) &&
+                    Objects.equals(getSex(), passport.getSex());
+        }
+
 }
