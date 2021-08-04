@@ -1,7 +1,7 @@
 package by.it_academy.polyclinic.model.user_Info;
 
 import by.it_academy.polyclinic.model.doctor_info.DoctorInfo;
-import by.it_academy.polyclinic.model.patient_info.MedicalCard;
+import by.it_academy.polyclinic.model.patient_info.MedicalNote;
 import by.it_academy.polyclinic.model.patient_info.Ticket;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,13 +47,13 @@ public class User implements UserDetails {
     @JoinColumn(name = "doctor_info_id")
     private DoctorInfo doctor;
 
-    @OneToOne
-    @JoinColumn(name = "medical_card_id")
-    private MedicalCard medicalCard;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "registration_id")
     private Address registrationAddress;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<MedicalNote> notes;
 
     private boolean active;
 
@@ -65,16 +65,24 @@ public class User implements UserDetails {
         this.registrationAddress = registrationAddress;
     }
 
-    public MedicalCard getMedicalCard() {
-        return medicalCard;
-    }
-
-    public void setMedicalCard(MedicalCard medicalCard) {
-        this.medicalCard = medicalCard;
-    }
-
     public DoctorInfo getDoctor() {
         return doctor;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public Set<MedicalNote> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(Set<MedicalNote> notes) {
+        this.notes = notes;
     }
 
     @Override
@@ -191,10 +199,8 @@ public class User implements UserDetails {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", eMail='" + eMail + '\'' +
                 ", password='" + password + '\'' +
-                ", passport=" + passport +
                 ", tickets=" + tickets +
                 ", doctor=" + doctor +
-                ", medicalCard=" + medicalCard +
                 ", registrationAddress=" + registrationAddress +
                 ", active=" + active +
                 '}';
@@ -204,7 +210,6 @@ public class User implements UserDetails {
     public int hashCode()
     {
         return Objects.hash(getId(), getPhoneNumber(), getPassword(), geteMail(), isActive()
-                , getPassport(), getRoles(), getDoctor()
-        ,getMedicalCard());
+                , getPassport(), getRoles(), getDoctor());
     }
 }

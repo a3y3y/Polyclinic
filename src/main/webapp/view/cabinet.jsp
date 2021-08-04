@@ -52,7 +52,16 @@
                 <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/users">Пользователи</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация пользователя</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/doctor">Врачи</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/specializations">Специальности</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
             </li>
         </ul>
     </div>

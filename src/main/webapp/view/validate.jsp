@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta name="theme-color" content="#7952b3">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
     <sec:authentication var="user" property="principal"/>
     <style>
         .block{
@@ -26,7 +26,7 @@
             width: 40%;
             float: left;
             padding: 20px;
-            
+
         }
         .col-md-4{
             float: left;
@@ -46,14 +46,14 @@
 <body class="text-center">
 <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/">На главную</a>
-    <button class="navbar-toggler" type="hidden" data-toggle="collapse" data-target="#navbarNav"
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/medical_card">Моя карта</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/medical_card">Мед. карта</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Анализы</a>
@@ -65,41 +65,50 @@
                 <a class="nav-link" href="#">Личные данные</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/users">Пользователи</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link active" href="${pageContext.request.contextPath}/cabinet/validate">Валидация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/doctor">Врачи</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/specializations">Специальности</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
             </li>
         </ul>
     </div>
     <div>
-        <a>
-            <sec:authentication property="principal.username"/>
-        </a>
+        <a><sec:authentication property="principal.username" /></a>
     </div>
-
 </nav>
-
-
-
-<div class="col-md-3">
-    <input class="form-control1" list="datalistOptions" id="exDataList" placeholder="e-mail пользователя" name="eMail"
-           required>
-    <datalist id="datalistOptions">
-    </datalist>
-</div>
 <div>
+
     <div class="col-md-3">
-        <button class="btn btn-primary" type="submit" id="post-passport" form="passport">Добавить паспорт</button>
+        <button class="btn btn-primary" type="submit" name="post-address" id="post-address" form="address">Добавить адрес</button>
     </div>
     <div class="col-md-3">
-        <button class="btn btn-primary" type="submit" id="put-passport" form="passport">Обновить паспорт</button>
+        <button class="btn btn-primary" type="submit" name="put-address" id="put-address" form="address">Обновить адрес</button>
     </div>
     <div class="col-md-3">
-        <button class="btn btn-primary" type="submit" id="post-address" form="address">Добавить адрес</button>
+        <button class="btn btn-primary" type="submit" name="post-passport" id="post-passport" form="passport">Добавить паспорт</button>
     </div>
     <div class="col-md-3">
-        <button class="btn btn-primary" type="submit" id="put-address" form="address">Обновить адрес</button>
+        <button class="btn btn-primary" type="submit" name="put-passport" id="put-passport" form='passport' onclick="submit">Обновить паспорт</button>
     </div>
     <div class="col-md-3">
-        <button class="btn btn-primary" type="submit" id="delete-user">Удалить пользователя</button>
+        <button class="btn btn-primary" type="submit" name="delete-user"  id="delete-user">Удалить пользователя</button>
+    </div>
+
+
+    <div class="col-md-5">
+        <input class="form-control1" list="datalistOptions" id="exDataList" placeholder="e-mail пользователя" name="eMail"
+               required>
+        <datalist id="datalistOptions">
+        </datalist>
     </div>
 
 </div>
@@ -148,11 +157,7 @@
             <label for="validationDefault01" class="form-label">Код страны выдачи</label>
             <input type="text" class="form-control" id="validationDefault01" name="codeOfIssuingState" required>
         </div>
-        <div class="col-md-4">
-            <label for="validationDefault17" class="form-label">Номер телефона</label>
-            <input type="tel" class="form-control" id="validationDefault17" name="phoneNumber" path="phoneNumber"
-                   required>
-        </div>
+
         <div class="col-md-4">
             <label for="validationDefault07" class="form-label">Номер паспорта</label>
             <input type="text" class="form-control" id="validationDefault07" name="number" required>
@@ -173,8 +178,8 @@
             <label for="date3" class="form-label">Срок действия</label>
             <input type="date" class="form-control" id="date3" name="expireDate" placeholder="Срок действия">
         </div>
-        <input type="text" class="form-control" id="passportUserId" name="userId" hidden>
-        <input type="text" class="form-control" id="passportId" name="id" hidden>
+        <input type="text" class="form-hidden" id="passportUserId" name="userId" value="0" hidden>
+        <input type="text" class="form-hidden" id="passportId" name="id" value="0" hidden>
     </form>
 
 
@@ -218,8 +223,8 @@
             <label for="validationDefault05" class="form-label">Индекс</label>
             <input type="text" class="form-control" id="validationDefault05" name="index" required>
         </div>
-        <input type="text" class="form-control" id="userId" name="userId" hidden>
-        <input type="text" class="form-control" id="addressId" name="id" hidden>
+        <input type="text" class="form-hidden" id="userId" name="userId" value="0" hidden>
+        <input type="text" class="form-hidden" id="addressId" name="id" value="0" hidden>
     </form>
 
 </div>
@@ -228,7 +233,23 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script>
+        function putButton2(){
+        document.querySelector('.passport-form').addEventListener('submit', handleFormSubmit4);
+        }
+        function postButton1(){
+        document.querySelector('.passport-form').addEventListener('submit', handleFormSubmit1);
+        }
+         function putButton1(){
+        document.querySelector('.address-form').addEventListener('submit', handleFormSubmit3);
+        }
+        function postButton2(){
+        document.querySelector('.address-form').addEventListener('submit', handleFormSubmit2);
+        }
+
+
+
 $(document).ready(function(){
     $.ajax({
         url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/users/eMails',
@@ -245,9 +266,9 @@ $(document).ready(function(){
         }
     });
 });
-        
+
         document.getElementById('exDataList').addEventListener('input', function () {
-    var g = $('#exDataList').val(); 
+    var g = $('#exDataList').val();
     var id = $('#datalistOptions').find('option[value="' +g + '"]').attr('data-id');
     var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/users/' + id;
     $.ajax({
@@ -267,11 +288,10 @@ $(document).ready(function(){
                     $("[name='issueDate']").val(response.passport.issueDate);
                     $("[name='expireDate']").val(response.passport.expireDate);
                     $("[id='passportId']").val(response.passport.id);
-                    $("[name='phoneNumber']").val(response.phoneNumber);
                     if(response.passport.sex == "муж"){
                     $("input[id='flexRadioDefault1']").prop('checked', true);} else {
                     $("input[id='flexRadioDefault2']").prop('checked', true);}
-            
+
                     $("[name='country']").val(response.registrationAddress.country);
                     $("[name='region']").val(response.registrationAddress.region);
                     $("[name='city']").val(response.registrationAddress.city);
@@ -281,72 +301,72 @@ $(document).ready(function(){
                     $("[name='index']").val(response.registrationAddress.index);
                     $("[id='addressId']").val(response.registrationAddress.id);
             }
-//             else {
-//                    $("[class='form-control']").val(null);
-//                    $("[class='form-select']").val(null);
-//                    $("input[id='flexRadioDefault1']").prop('checked', false);
-//                    $("input[id='flexRadioDefault2']").prop('checked', false);
-//            }
+             else {
+                    $("[class='form-control']").val(null);
+                    $("[class='form-hidden']").val("0");
+                    $("[class='form-select']").val(null);
+                    $("input[id='flexRadioDefault1']").prop('checked', false);
+                    $("input[id='flexRadioDefault2']").prop('checked', false);
+            }
 
                 }
 
         })
 });
-    
-      
-        
+
+
+
         function handleFormSubmit1(event) {
   event.preventDefault();
-  
-  var g = $('#exDataList').val(); 
+
+  var g = $('#exDataList').val();
   var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
             if(id == null){
                 alert("Введите e-mail пользователя")
             } else {
   var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/passports';
-  $("[name='passportUserId']").val(id);
-    
+  $("[id='passportUserId']").val(id);
+
   const data = new FormData(event.target);
-  
+
   const formJSON = Object.fromEntries(data.entries());
+                console.log(formJSON);
                  $.ajax({
          url:  url,
          type: 'post',
-         data: formJSON,        
+         data: formJSON,
          statusCode: {
          201: function() {
             alert('Пасспорт добавлен');
+         },
+         406: function() {
+             alert('У данного пользователя уже добавлен пасспорт')
          }
         }
     });
     }
 }
 
-        
-        function postButton1(){
-        document.querySelector('.passport-form').addEventListener('submit', handleFormSubmit1);
-        }
-        document.getElementById('post-passport').addEventListener('click', postButton1);
-        
 
-        
+
+        document.getElementById('post-passport').addEventListener('click', postButton1);
+
+
+
         function handleFormSubmit2(event) {
   event.preventDefault();
-  
-  var g = $('#exDataList').val(); 
+
+  var g = $('#exDataList').val();
   var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
             if(id == null){
                 alert("Введите e-mail пользователя")
             } else {
   var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/addresses';
-  $("[name='userId']").val(id);
-    
+  $("[id='userId']").val(id);
+
   const data = new FormData(event.target);
-  
+
   const formJSON = Object.fromEntries(data.entries());
-  const stringJson = JSON.stringify(formJSON);
-                console.log(formJSON);
-                
     $.ajax({
         url:  url,
         type: 'post',
@@ -354,23 +374,24 @@ $(document).ready(function(){
         statusCode: {
          201: function() {
             alert('Адрес добавлен');
+         },
+         406: function() {
+             alert('У данного пользователя уже добавлен адрес')
          }
         }
     });
 }
         }
-        function postButton2(){
-            document.querySelector('.address-form').addEventListener('submit', handleFormSubmit2);
-        }
+
         document.getElementById('post-address').addEventListener('click', postButton2);
-        
-        
-        
-        
+
+
+
+
         function handleFormSubmit3(event) {
         event.preventDefault();
-  
-  var g = $('#exDataList').val(); 
+
+  var g = $('#exDataList').val();
   var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
   var addressId = document.getElementById('addressId').value;
             if(id == null){
@@ -378,9 +399,9 @@ $(document).ready(function(){
             } else {
   var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/addresses/' + addressId;
   $("[name='userId']").val(id);
-    
+
   const data = new FormData(event.target);
-  
+
   const formJSON = Object.fromEntries(data.entries());
 
   const stringJson = JSON.stringify(formJSON);
@@ -389,7 +410,7 @@ $(document).ready(function(){
         type: 'put',
         dataType: "json",
         data: stringJson,
-        contentType: 'application/json',             
+        contentType: 'application/json',
         statusCode: {
          200: function() {
             alert('Адрес обновлен');
@@ -398,52 +419,48 @@ $(document).ready(function(){
     });
 }
         }
-        function putButton1(){
-            document.querySelector('.address-form').addEventListener('submit', handleFormSubmit3);
-        }
-        document.getElementById('put-address').addEventListener('click', putButton1);
-        
-        
-//        function handleFormSubmit4(event) {
-//        event.preventDefault();
-//  
-//  var g = $('#exDataList').val(); 
-//  var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
-//  var passportId = document.getElementById('passportId').value;
-//            if(id == null){
-//                alert("Введите e-mail пользователя")
-//            } else {
-//  var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/passports/' + passportId;
-//  $("[name='passportUserId']").val(id);
-//    
-//  const data = new FormData(event.target);
-//  
-//  const formJSON = Object.fromEntries(data.entries());
-//
-//  const stringJson = JSON.stringify(formJSON);
-//                $.ajax({
-//        contentType: 'application/json', 
-//        url:  url,
-//        type: 'put',
-//        dataType: "json",
-//        data: stringJson,
-//        statusCode: {
-//         200: function() {
-//            alert('Пасспорт обновлен');
-//         }
-//        }
-//    });
-//}
-//        }
-//        function putButton2(){
-//            document.querySelector('.passport-form').addEventListener('submit', handleFormSubmit4);
-//        }
-//        document.getElementById('put-passport').addEventListener('click', putButton2);
 
-        
-        
+        document.getElementById('put-address').addEventListener('click', putButton1);
+
+
+        function handleFormSubmit4(event) {
+        event.preventDefault();
+
+  var g = $('#exDataList').val();
+  var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
+  var passportId = document.getElementById('passportId').value;
+            if(id == null){
+                alert("Введите e-mail пользователя")
+            } else {
+  var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/passports/' + passportId;
+  $("[name='passportUserId']").val(id);
+
+  const data = new FormData(event.target);
+
+  const formJSON = Object.fromEntries(data.entries());
+
+  const stringJson = JSON.stringify(formJSON);
+                $.ajax({
+        contentType: 'application/json',
+        url:  url,
+        type: 'put',
+        dataType: "json",
+        data: stringJson,
+        statusCode: {
+         200: function() {
+            alert('Пасспорт обновлен');
+         }
+        }
+    });
+}
+        }
+
+        document.getElementById('put-passport').addEventListener('click', putButton2);
+
+
+
         document.getElementById("delete-user").addEventListener('click', function(){
-            var g = $('#exDataList').val(); 
+            var g = $('#exDataList').val();
             var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
             var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/users/' + id;
             $.ajax({
@@ -458,7 +475,7 @@ $(document).ready(function(){
             });
         });
 
-        
+
         </script>
 
 </body>

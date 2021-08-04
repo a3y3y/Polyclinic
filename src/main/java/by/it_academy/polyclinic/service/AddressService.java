@@ -41,6 +41,7 @@ public class AddressService implements IAddressService {
         addressNew.setCity(address.getCity());
         addressNew.setRegion(addressNew.getRegion());
         addressNew.setCountry(address.getCountry());
+        addressNew.setId(address.getId());
         Address addressSaved = addressRepository.save(addressNew);
         if(addressSaved.equals(addressNew)){
             return true;

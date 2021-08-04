@@ -23,6 +23,11 @@ public class PassportService implements IPassportService {
     }
 
     @Override
+    public Passport getPassportByNumber(String number) {
+        return passportRepository.findByNumber(number);
+    }
+
+    @Override
     public Passport addPassport(Passport passport, int userId) {
         return passportRepository.save(passport);
     }
@@ -51,6 +56,7 @@ public class PassportService implements IPassportService {
         passportNew.setDateOfBirth(passport.getDateOfBirth());
         passportNew.setLastName(passport.getLastName());
         passportNew.setFirstName(passport.getFirstName());
+        passportNew.setId(passport.getId());
         Passport passportSaved = passportRepository.save(passportNew);
         if(passportSaved.equals(passportNew)){
             return true;

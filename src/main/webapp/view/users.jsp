@@ -13,7 +13,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <title>Аэропорты</title>
+    <title>Пользователи</title>
 </head>
 <body>
 
@@ -26,7 +26,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/medical_card">Моя карта</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/medical_card">Мед. карта</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Анализы</a>
@@ -41,12 +41,21 @@
                 <a class="nav-link active" href="${pageContext.request.contextPath}/cabinet/users">Пользователи</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация пользователя</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/doctor">Врачи</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/specializations">Специальности</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
             </li>
         </ul>
     </div>
     <div>
-        <a><sec:authentication property="principal.username" /> </a>
+        <a><sec:authentication property="principal.username" /></a>
     </div>
 </nav>
 
@@ -59,10 +68,11 @@
     <table id="userTable" border="1" >
         <thead>
         <tr>
-            <th width="25%">Email</th>
-            <th width="25%">Phone number</th>
-            <th width="25%">Last name</th>
-            <th width="25%">First name</th>
+            <th width="20%" class="text-center">Email</th>
+            <th width="20%" class="text-center">Телефон</th>
+            <th width="20%" class="text-center">Фамилия</th>
+            <th width="20%" class="text-center">Имя</th>
+            <th width="20%" class="text-center">Отчество</th>
         </tr>
         </thead>
         <tbody></tbody>
@@ -91,12 +101,14 @@ $(document).ready(function(){
                 var phoneNumber = response[i].phoneNumber;
                 var lastName = response[i].passport.lastName;
                 var firstName = response[i].passport.firstName;
+                var patronymic = response[i].passport.patronymic;
 
                 var tr_str = "<tr>" +
                     "<td align='center'>" + eMail + "</td>" +
                     "<td align='center'>" + phoneNumber + "</td>" +
                     "<td align='center'>" + lastName + "</td>" +
                     "<td align='center'>" + firstName + "</td>" +
+                    "<td align='center'>" + patronymic + "</td>" +
                     "</tr>";
 
                 $("#userTable tbody").append(tr_str);

@@ -32,6 +32,19 @@ public class Address {
     @JsonIgnore
     private List<User> users;
 
+    public Address() {
+    }
+
+    public Address(String country, String region, String city, String street, String houseNumber, String apartmentNumber, String index) {
+        this.country = country;
+        this.region = region;
+        this.city = city;
+        this.street = street;
+        this.houseNumber = houseNumber;
+        this.apartmentNumber = apartmentNumber;
+        this.index = index;
+    }
+
     public List<User> getUsers() {
         return users;
     }

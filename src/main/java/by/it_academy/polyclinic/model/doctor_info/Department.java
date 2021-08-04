@@ -3,6 +3,7 @@ package by.it_academy.polyclinic.model.doctor_info;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "departments")
@@ -10,10 +11,11 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(unique = true)
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "departments")
+    @ManyToMany(mappedBy = "departments", fetch = FetchType.EAGER)
     private List<DoctorInfo> doctorInfo = new ArrayList<>();
 
     public int getId() {
@@ -46,5 +48,27 @@ public class Department {
 
     public void setDoctorInfo(List<DoctorInfo> doctorInfo) {
         this.doctorInfo = doctorInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
+        return id == that.id && name.equals(that.name) && description.equals(that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description);
     }
 }

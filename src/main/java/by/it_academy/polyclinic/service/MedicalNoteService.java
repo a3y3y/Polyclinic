@@ -1,8 +1,7 @@
 package by.it_academy.polyclinic.service;
 
-import by.it_academy.polyclinic.model.patient_info.MedicalCard;
 import by.it_academy.polyclinic.model.patient_info.MedicalNote;
-import by.it_academy.polyclinic.model.user_Info.Passport;
+import by.it_academy.polyclinic.model.user_Info.User;
 import by.it_academy.polyclinic.service.api.IMedicalNoteService;
 import by.it_academy.polyclinic.storage.IMedicalNoteRepository;
 
@@ -21,9 +20,11 @@ public class MedicalNoteService implements IMedicalNoteService {
         return medicalNoteRepository.save(medicalNote);
     }
 
-    public Set<MedicalNote> getNotesByCard(MedicalCard medicalCard) {
-        return medicalNoteRepository.findAllByMedicalCard(medicalCard);
+    @Override
+    public Set<MedicalNote> getNotesByUser(User user) {
+        return medicalNoteRepository.findAllByUser(user);
     }
+
 
     @Override
     public List<MedicalNote> getAll() {
@@ -43,6 +44,7 @@ public class MedicalNoteService implements IMedicalNoteService {
         noteNew.setType(medicalNote.getType());
         noteNew.setIllness(medicalNote.getIllness());
         noteNew.setDate(medicalNote.getDate());
+        noteNew.setId(medicalNote.getId());
         MedicalNote noteSaved = medicalNoteRepository.save(noteNew);
         if (noteSaved.equals(noteNew)) {
             return true;

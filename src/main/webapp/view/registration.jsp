@@ -45,6 +45,10 @@
             <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
             <label for="floatingPassword">Пароль</label>
         </div>
+        <div class="form-floating">
+            <input type="tel" class="form-control" id="floatingTel" placeholder="Phone number" name="tel" required>
+            <label for="floatingTel">Телефон</label>
+        </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">Регистрация</button>
         <p class="mt-5 mb-3 text-muted">© 2021</p>
     </form>

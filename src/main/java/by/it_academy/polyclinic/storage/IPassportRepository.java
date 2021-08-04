@@ -8,4 +8,6 @@ public interface IPassportRepository extends JpaRepository<Passport, Integer> {
                                                      String patronymic, String number);
     Passport findById(int id);
 
+    Passport findByNumber(String number);
+
 }

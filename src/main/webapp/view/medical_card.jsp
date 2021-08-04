@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ page import = "by.it_academy.polyclinic.model.patient_info.MedicalNoteType" %>
+
 
 <html lang="ru">
 <head>
@@ -28,6 +28,7 @@
     </style>
 
 </head>
+
 <body class="text-center">
 <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/">На главную</a>
@@ -38,7 +39,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link active" href="${pageContext.request.contextPath}/cabinet/medical_card">Моя карта</a>
+                <a class="nav-link active" href="${pageContext.request.contextPath}/cabinet/medical_card">Мед. карта</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Анализы</a>
@@ -49,6 +50,21 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Личные данные</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/users">Пользователи</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/doctor">Врачи</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/specializations">Специальности</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
+            </li>
         </ul>
     </div>
     <div>
@@ -56,68 +72,120 @@
     </div>
 </nav>
 
-<table class="block" border="1">
-    <tbody>
-    <c:forEach items="${requestScope.medicalNotes}"
-               var="medicalNote">
+<div class="container">
+    <table id="medical-note-table" border="1" >
+        <thead>
         <tr>
-            <td width="20%">${medicalNote.date}</td>
-            <td width="20%">${medicalNote.type}</td>
-            <td width="20%">${medicalNote.illness}</td>
-            <td width="20%">${medicalNote.name}</td>
-            <td width="20%">${medicalNote.description}</td>
+            <th width="20%" class="text-center">Дата</th>
+            <th width="20%" class="text-center">Запись</th>
+            <th width="20%" class="text-center">Название</th>
+            <th width="20%" class="text-center">Заболевание</th>
+            <th width="40%" class="text-center">Описание</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
-
-
-
-
-<div class="block">
-    <form action="${pageContext.request.contextPath}/cabinet/medical_card" method="post">
-        <div class="form-floating">
-            <input type="date" class="form-control" id="floatingInput" name="date">
-        </div>
-        <select class="form-select" aria-label="Тип записи" name="type">
-            <c:forEach items="<%= MedicalNoteType.getNames() %>"
-                       var="noteType">
-            <option value="${noteType}">${noteType}</option>
-            </c:forEach>
-        </select>
-
-
-        <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput2" name="name">
-            <label for="floatingInput2">Название записи</label>
-        </div>
-
-        <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput1" name="illness">
-            <label for="floatingInput1">Заболевание</label>
-        </div>
-
-        <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput3" name="description">
-            <label for="floatingInput3">Описание</label>
-        </div>
-        <label for="exampleDataList" class="form-label">Имя пациента</label>
-        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." name="fio">
-        <datalist id="datalistOptions">
-            <c:forEach items="${passports}"
-                       var="passport">
-                <option>${passport.lastName} ${passport.firstName} ${passport.patronymic} ${passport.number}</option>
-            </c:forEach>
-        </datalist>
-
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Добавить запись</button>
-        <p class="mt-5 mb-3 text-muted">© 2021</p>
-    </form>
+        </thead>
+        <tbody></tbody>
+    </table>
 </div>
+
+
+<sec:authorize access="hasRole('DOCTOR')">
+    <div class="block">
+        <form class="form">
+            <div class="form-floating">
+                <input type="date" class="form-control" id="floatingInput" name="date" required>
+            </div>
+            <select class="form-select" aria-label="Тип записи" name="type" id="type">
+                <option>Диагноз</option>
+                <option>Лечение</option>
+                <option>Анализ</option>
+                <option>Рецепт</option>
+                <option>Больничный</option>
+                <option>Прививка</option>
+            </select>
+
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput2" name="name" required>
+                <label for="floatingInput2">Название записи</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput1" name="illness" required>
+                <label for="floatingInput1">Заболевание</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput3" name="description" required>
+                <label for="floatingInput3">Описание</label>
+            </div>
+            <label for="exampleDataList" class="form-label">Имя пациента</label>
+            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." name="passport" required>
+            <datalist id="datalistOptions">
+            </datalist>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Добавить запись</button>
+            <p class="mt-5 mb-3 text-muted">© 2021</p>
+        </form>
+    </div>
+</sec:authorize>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+
+$(document).ready(function(){
+    $.ajax({
+        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/medical_notes',
+        type: 'get',
+        success: function(response){
+            var len = response.length;
+            for(var i=0; i<len; i++){
+                var date = response[i].date;
+                var type = response[i].type;
+                var name = response[i].name;
+                var illness = response[i].illness;
+                var description = response[i].description;
+                var tr_str = "<tr>" +
+                    "<td align='center'>" + date + "</td>" +
+                    "<td align='center'>" + type + "</td>" +
+                    "<td align='center'>" + name + "</td>" +
+                    "<td align='center'>" + illness + "</td>" +
+                    "<td align='center'>" + description + "</td>" +
+                    "</tr>";
+
+                $("#medical-note-table tbody").append(tr_str);
+            }
+        }
+    });
+});
+
+
+
+function handleFormSubmit(event) {
+  event.preventDefault();
+  var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/medical_notes';
+
+  const data = new FormData(event.target);
+
+  const formJSON = Object.fromEntries(data.entries());
+                console.log(formJSON);
+                 $.ajax({
+         url:  url,
+         type: 'post',
+         data: formJSON,
+         statusCode: {
+         201: function() {
+            alert('Запись добавлена');
+         },
+        }
+    });
+    }
+
+document.querySelector('.form').addEventListener('submit', handleFormSubmit);
+</script>
 
 </body>
 </html>

@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IPassportService {
     Passport getPassportByFio(String lastName, String firstName, String patronymic, String passportNumber);
+    Passport getPassportByNumber(String number);
     Passport addPassport(Passport passport, int userId);
     List<Passport> getAll();
     Passport getPassportById(int id);

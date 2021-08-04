@@ -18,6 +18,7 @@ public class Passport implements Comparable<Passport> {
     private String patronymic;
     @Column(name = "code_of_issuing_state")
     private String codeOfIssuingState;
+    @Column(unique = true)
     private String number;
     @Column(name = "personal_id")
     private String personalId;
@@ -36,6 +37,23 @@ public class Passport implements Comparable<Passport> {
     @OneToOne(mappedBy = "passport")
     @JsonIgnore
     private User user;
+
+    public Passport() {
+    }
+
+    public Passport(String lastName, String firstName, String patronymic, String codeOfIssuingState, String number, String personalId, String nationality, String dateOfBirth, String sex, String issueDate, String expireDate) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.patronymic = patronymic;
+        this.codeOfIssuingState = codeOfIssuingState;
+        this.number = number;
+        this.personalId = personalId;
+        this.nationality = nationality;
+        this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
+        this.issueDate = issueDate;
+        this.expireDate = expireDate;
+    }
 
     public int getUserId() {
         return userId;

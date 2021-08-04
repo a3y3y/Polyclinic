@@ -1,6 +1,7 @@
 package by.it_academy.polyclinic.controller.rest;
 
 import by.it_academy.polyclinic.model.user_Info.Address;
+import by.it_academy.polyclinic.model.user_Info.Passport;
 import by.it_academy.polyclinic.model.user_Info.User;
 import by.it_academy.polyclinic.service.api.IAddressService;
 import by.it_academy.polyclinic.service.api.IUserService;
@@ -42,9 +43,16 @@ public class AddressControllerRest {
     @PostMapping
     public ResponseEntity<Address> add(Address address) {
         User user = userService.getUserById(address.getUserId());
-        user.setRegistrationAddress(address);
-        userService.update(user, address.getUserId());
-        return new ResponseEntity<>(address, HttpStatus.CREATED);
+        if(user.getRegistrationAddress() != null){
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            Address addressNew = new Address(address.getCountry(), address.getRegion(),
+                    address.getCity(), address.getStreet(), address.getHouseNumber(),
+                    address.getApartmentNumber(), address.getIndex());
+            user.setRegistrationAddress(addressNew);
+            userService.update(user, address.getUserId());
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

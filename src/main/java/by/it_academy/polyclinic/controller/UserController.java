@@ -24,9 +24,10 @@ public class UserController {
     @PostMapping("/registration")
     public String userRegistration(@RequestParam(name = "eMail") String email,
                                    @RequestParam(name = "password") String password,
+                                   @RequestParam(name = "tel") String tel,
                                    HttpServletRequest req){
         try {
-            User user = userService.registerUser(email, password);
+            User user = userService.registerUser(email, password, tel);
 //            req.setAttribute("username", user.geteMail());
 //            req.setAttribute("password", user.getPassword());
             return "redirect: " + req.getContextPath() + "/signIn";
@@ -49,5 +50,20 @@ public class UserController {
 
     @GetMapping("/cabinet/users")
     public String getUsers(){return "users";}
+
+    @GetMapping("/cabinet/doctor")
+    public String getDoctorPage(){
+        return "doctor";
+    }
+
+    @GetMapping("/cabinet/specializations")
+    public String getSpecializationPage(){
+        return "specialization";
+    }
+
+    @GetMapping("/cabinet/departments")
+    public String getDepartmentPage(){
+        return "department";
+    }
 
 }

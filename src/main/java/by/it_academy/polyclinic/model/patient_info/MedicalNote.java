@@ -1,38 +1,32 @@
 package by.it_academy.polyclinic.model.patient_info;
 
+import by.it_academy.polyclinic.model.user_Info.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Date;
+
 
 @Entity
-@Table(name = "medical_services")
+@Table(name = "medical_notes")
 public class MedicalNote implements Comparable<MedicalNote>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private long id;
-    @Enumerated(EnumType.STRING)
-    private MedicalNoteType type;
+    private String type;
     private String name;
     private String illness;
     private String date;
     private String description;
 
     @Transient
-    private int cardId;
+    private String passport;
 
     @ManyToOne
-    @JoinColumn(name = "medical_card_id")
+    @JoinColumn(name = "user_id")
     @JsonIgnore
-    private MedicalCard medicalCard;
+    private User user;
 
-    public int getCardId() {
-        return cardId;
-    }
-
-    public void setCardId(int cardId) {
-        this.cardId = cardId;
-    }
 
     public String getIllness() {
         return illness;
@@ -42,12 +36,12 @@ public class MedicalNote implements Comparable<MedicalNote>{
         this.illness = illness;
     }
 
-    public MedicalCard getMedicalCard() {
-        return medicalCard;
+    public User getUser() {
+        return user;
     }
 
-    public void setMedicalCard(MedicalCard medicalCard) {
-        this.medicalCard = medicalCard;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public long getId() {
@@ -58,12 +52,20 @@ public class MedicalNote implements Comparable<MedicalNote>{
         this.id = id;
     }
 
-    public MedicalNoteType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(MedicalNoteType type) {
+    public void setType(String type) {
         this.type = type;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
     }
 
     public String getName() {
@@ -98,13 +100,12 @@ public class MedicalNote implements Comparable<MedicalNote>{
     @Override
     public String toString() {
         return "MedicalNote{" +
-                "id=" + id +
-                ", type=" + type +
+                "type=" + type +
                 ", name='" + name + '\'' +
                 ", illness='" + illness + '\'' +
                 ", date='" + date + '\'' +
                 ", description='" + description + '\'' +
-                ", cardId=" + cardId +
+                ", passport='" + passport + '\'' +
                 '}';
     }
 }

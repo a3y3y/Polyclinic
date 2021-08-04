@@ -30,11 +30,6 @@ public class RootConfig {
     }
 
     @Bean
-    public IMedicalCardService medicalCardService(IMedicalCardRepository medicalCardRepository){
-        return new MedicalCardService(medicalCardRepository);
-    }
-
-    @Bean
     public IPassportService passportService(IPassportRepository passportRepository){
         return new PassportService(passportRepository);
     }
@@ -49,4 +44,18 @@ public class RootConfig {
         return new AddressService(addressRepository);
     }
 
+    @Bean
+    public IDoctorInfoService doctorInfoService(IDoctorInfoRepository doctorInfoRepository){
+        return new DoctorInfoService(doctorInfoRepository);
+    }
+
+    @Bean
+    public ISpecializationService specializationService(ISpecializationRepository specializationRepository){
+        return new SpecializationService(specializationRepository);
+    }
+
+    @Bean
+    public IDepartmentService departmentService(IDepartmentRepository departmentRepository){
+        return new DepartmentService(departmentRepository);
+    }
 }

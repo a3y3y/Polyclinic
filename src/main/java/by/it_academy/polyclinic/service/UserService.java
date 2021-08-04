@@ -60,6 +60,10 @@ public class UserService implements IUserService, UserDetailsService {
         userNew.seteMail(userNew.geteMail());
         userNew.setPassport(user.getPassport());
         userNew.setRegistrationAddress(user.getRegistrationAddress());
+        userNew.setNotes(user.getNotes());
+        userNew.setTickets(user.getTickets());
+        userNew.setDoctor(user.getDoctor());
+        userNew.setId(user.getId());
         User userSaved = userRepository.save(userNew);
         if(userSaved.equals(userNew)){
             return true;
@@ -78,12 +82,13 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
 
-    public User registerUser(String eMail, String password){
+    public User registerUser(String eMail, String password, String tel){
         User user = new User();
         Set<Role> roles = new HashSet<>();
         roles.add(Role.PATIENT);
         user.setRoles(roles);
         user.seteMail(eMail);
+        user.setPhoneNumber(tel);
         user.setPassword(passwordEncoder.encode(password));
         user.setActive(true);
         validationForSignUp(user);

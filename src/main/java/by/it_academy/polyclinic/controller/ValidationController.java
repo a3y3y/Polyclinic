@@ -19,29 +19,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/cabinet")
 public class ValidationController {
 
-    @Autowired
-    private IPassportService passportService;
-
-    @Autowired
-    private IUserService userService;
+//    @Autowired
+//    private IPassportService passportService;
+//
+//    @Autowired
+//    private IUserService userService;
 
     @GetMapping("/validate")
     public String getPage(Model model){
-        model.addAttribute("users", userService.getAll());
+//        model.addAttribute("users", userService.getAll());
         return "validate";
     }
 
-    @PostMapping("/validate")
-    public String validateUser(@ModelAttribute("user1") User userData,
-                               @ModelAttribute("passport") Passport passportData,
-                               @ModelAttribute("address") Address addressData){
-        User user = userService.getUserByEmail(userData.geteMail());
-
-        user.setPhoneNumber(userData.getPhoneNumber());
-        user.setRegistrationAddress(addressData);
-        user.setPassport(passportData);
-        userService.update(user, user.getId());
-        return "validate";
-    }
+//    @PostMapping("/validate")
+//    public String validateUser(@ModelAttribute("user1") User userData,
+//                               @ModelAttribute("passport") Passport passportData,
+//                               @ModelAttribute("address") Address addressData){
+//        User user = userService.getUserByEmail(userData.geteMail());
+//
+//        user.setPhoneNumber(userData.getPhoneNumber());
+//        user.setRegistrationAddress(addressData);
+//        user.setPassport(passportData);
+//        userService.update(user, user.getId());
+//        return "validate";
+//    }
 
 }

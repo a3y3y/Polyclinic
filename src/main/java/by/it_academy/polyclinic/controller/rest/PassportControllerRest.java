@@ -42,9 +42,17 @@ public class PassportControllerRest {
     @PostMapping
     public ResponseEntity<Passport> add(Passport passport) {
         User user = userService.getUserById(passport.getUserId());
-        user.setPassport(passport);
-        userService.update(user, passport.getUserId());
-        return new ResponseEntity<>(passport, HttpStatus.CREATED);
+        if(user.getPassport() != null){
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            Passport passportNew = new Passport(passport.getLastName(), passport.getFirstName(),
+                    passport.getPatronymic(), passport.getCodeOfIssuingState(), passport.getNumber(),
+                    passport.getPersonalId(), passport.getNationality(), passport.getDateOfBirth(),
+                    passport.getSex(), passport.getIssueDate(), passport.getExpireDate());
+            user.setPassport(passportNew);
+            userService.update(user, passport.getUserId());
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
