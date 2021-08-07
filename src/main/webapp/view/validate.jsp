@@ -79,6 +79,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/tickets">Талоны</a>
+            </li>
         </ul>
     </div>
     <div>

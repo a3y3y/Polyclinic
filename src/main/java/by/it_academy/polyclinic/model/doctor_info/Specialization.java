@@ -1,5 +1,7 @@
 package by.it_academy.polyclinic.model.doctor_info;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,12 @@ public class Specialization {
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "specializations", fetch = FetchType.EAGER)
+    @ManyToMany
+    @JoinTable(
+            name = "specialization_doctor",
+            joinColumns = { @JoinColumn(name = "doctor_info_id") },
+            inverseJoinColumns = { @JoinColumn(name = "specialization_id") } )
+    @JsonIgnore
     private List<DoctorInfo> doctorInfo = new ArrayList<>();
 
     public int getId() {

@@ -1,6 +1,8 @@
 package by.it_academy.polyclinic.controller.rest;
 
+import by.it_academy.polyclinic.model.dto.UserDto;
 import by.it_academy.polyclinic.model.user_Info.Passport;
+import by.it_academy.polyclinic.model.user_Info.Role;
 import by.it_academy.polyclinic.model.user_Info.User;
 import by.it_academy.polyclinic.service.api.IPassportService;
 import by.it_academy.polyclinic.service.api.IUserService;
@@ -8,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/passports")
@@ -28,6 +33,15 @@ public class PassportControllerRest {
     public ResponseEntity<List<Passport>> readAll() {
         List<Passport> passports = passportService.getAll();
         return new ResponseEntity<>(passports, HttpStatus.OK);
+    }
+
+    @GetMapping("/doctors")
+    public ResponseEntity<List<UserDto>> readAllDoctorsPassports() {
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.DOCTOR);
+        List<UserDto> userDtos = new ArrayList<>();
+
+        return new ResponseEntity<>(userDtos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

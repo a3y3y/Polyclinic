@@ -1,11 +1,10 @@
 package by.it_academy.polyclinic.model.doctor_info;
 
 import by.it_academy.polyclinic.model.user_Info.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "doctor_info")
@@ -19,40 +18,34 @@ public class DoctorInfo {
     private String lastPosition;
     private String education;
     private String experience;
-    private byte rating;
+    private int rating;
 
     @OneToOne(mappedBy = "doctor")
+    @JsonIgnore
     private User doctor;
 
     @Transient
     private int userId;
 
-    @ManyToMany
-    @JoinTable(
-            name = "specialization_doctor",
-            joinColumns = { @JoinColumn(name = "doctor_info_id") },
-            inverseJoinColumns = { @JoinColumn(name = "specialization_id") })
-    private List<Specialization> specializations = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "department_doctor",
-            joinColumns = { @JoinColumn(name = "doctor_info_id") },
-            inverseJoinColumns = { @JoinColumn(name = "department_id") })
-    private List<Department> departments = new ArrayList<>();
+    @ManyToMany(mappedBy = "doctorInfo")
+    @JsonIgnore
+    private Set<Specialization> specializations = new HashSet<>();
+
+
+    @ManyToMany(mappedBy = "doctorInfo")
+    @JsonIgnore
+    private Set<Department> departments = new HashSet<>();
 
     public DoctorInfo() {
     }
 
-    public DoctorInfo(int id, String lastPlaceOfWork, String lastPosition, String education, String experience, byte rating, User doctor, int userId) {
-        this.id = id;
+    public DoctorInfo(String lastPlaceOfWork, String lastPosition, String education, String experience, byte rating, User doctor, int userId) {
         this.lastPlaceOfWork = lastPlaceOfWork;
         this.lastPosition = lastPosition;
         this.education = education;
         this.experience = experience;
         this.rating = rating;
-        this.doctor = doctor;
-        this.userId = userId;
     }
 
     public int getUserId() {
@@ -103,11 +96,11 @@ public class DoctorInfo {
         this.experience = experience;
     }
 
-    public byte getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(byte rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
@@ -119,30 +112,32 @@ public class DoctorInfo {
         this.doctor = doctor;
     }
 
-    public List<Specialization> getSpecializations() {
+    public Set<Specialization> getSpecializations() {
         return specializations;
     }
 
-    public void setSpecializations(List<Specialization> specializations) {
+    public void setSpecializations(Set<Specialization> specializations) {
         this.specializations = specializations;
     }
 
-    public List<Department> getDepartments() {
+    public Set<Department> getDepartments() {
         return departments;
     }
 
-    public void setDepartments(List<Department> departments) {
+    public void setDepartments(Set<Department> departments) {
         this.departments = departments;
     }
 
     @Override
     public String toString() {
         return "DoctorInfo{" +
-                "lastPlaceOfWork='" + lastPlaceOfWork + '\'' +
+                "id=" + id +
+                ", lastPlaceOfWork='" + lastPlaceOfWork + '\'' +
                 ", lastPosition='" + lastPosition + '\'' +
                 ", education='" + education + '\'' +
-                ", experience=" + experience +
+                ", experience='" + experience + '\'' +
                 ", rating=" + rating +
+                ", userId=" + userId +
                 '}';
     }
 

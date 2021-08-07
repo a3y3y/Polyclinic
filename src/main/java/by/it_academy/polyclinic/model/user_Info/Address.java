@@ -28,7 +28,7 @@ public class Address {
     @Transient
     private int userId;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "registrationAddress")
+    @OneToMany(mappedBy = "registrationAddress")
     @JsonIgnore
     private List<User> users;
 

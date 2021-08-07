@@ -1,6 +1,7 @@
 package by.it_academy.polyclinic.service;
 
 import by.it_academy.polyclinic.model.doctor_info.Specialization;
+import by.it_academy.polyclinic.model.user_Info.User;
 import by.it_academy.polyclinic.service.api.ISpecializationService;
 import by.it_academy.polyclinic.storage.ISpecializationRepository;
 
@@ -27,8 +28,6 @@ public class SpecializationService implements ISpecializationService {
     @Override
     public boolean update(Specialization specialization, int id) {
         Specialization specializationNew = specializationRepository.findById(id);
-        specializationNew.setId(specialization.getId());
-        specializationNew.setName(specialization.getName());
         specializationNew.setDescription(specialization.getDescription());
         Specialization specializationSaved = specializationRepository.save(specializationNew);
         if(specializationSaved.equals(specializationNew)){
@@ -44,5 +43,16 @@ public class SpecializationService implements ISpecializationService {
     @Override
     public Specialization add(Specialization specialization) {
         return specializationRepository.save(specialization);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        Specialization specialization = specializationRepository.findById(id);
+        if(specialization == null){
+            return false;
+        } else {
+            specializationRepository.delete(specialization);
+            return true;
+        }
     }
 }

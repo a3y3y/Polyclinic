@@ -56,7 +56,6 @@ public class PassportService implements IPassportService {
         passportNew.setDateOfBirth(passport.getDateOfBirth());
         passportNew.setLastName(passport.getLastName());
         passportNew.setFirstName(passport.getFirstName());
-        passportNew.setId(passport.getId());
         Passport passportSaved = passportRepository.save(passportNew);
         if(passportSaved.equals(passportNew)){
             return true;

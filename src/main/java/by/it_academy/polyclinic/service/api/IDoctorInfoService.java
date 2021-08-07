@@ -8,5 +8,6 @@ public interface IDoctorInfoService {
     List<DoctorInfo> getAll();
     DoctorInfo getInfoById(int id);
     boolean update(DoctorInfo doctorInfo, int id);
+    DoctorInfo add(DoctorInfo doctorInfo);
 
 }

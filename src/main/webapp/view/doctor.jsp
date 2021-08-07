@@ -12,16 +12,25 @@
 
     <sec:authentication var="user" property="principal"/>
     <style>
+        label{
+            display:block;
+            text-align: left;
+        }
+        .block2{
+            float: right;
+            padding: 20px;
+
+        }
+        .block3{
+            float: right;
+            padding: 20px;
+
+        }
         .block1{
-            border: 3px solid #fff;
             padding: 20px;
             width: 50%;
-        }
-        .passport-form{
-            width: 60%;
             float: left;
-            padding: 20px;
-            border-right: 1px solid #0D6EFD;
+
         }
         .input-group{
             float: left;
@@ -79,6 +88,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/tickets">Талоны</a>
+            </li>
         </ul>
     </div>
     <div>
@@ -88,10 +100,10 @@
 
 
 <div class="col-md-3">
-    <button class="btn btn-primary" type="submit" name="post-address" id="post-info" form="address">Добавить врача</button>
+    <button class="btn btn-primary" type="submit" name="post-info" id="post-info" form="doctor-form">Добавить врача</button>
 </div>
 <div class="col-md-3">
-    <button class="btn btn-primary" type="submit" name="put-address" id="put-info" form="address">Обновить данные</button>
+    <button class="btn btn-primary" type="submit" name="put-info" id="put-info" form="doctor-form">Обновить данные</button>
 </div>
 
 <div class="col-md-4">
@@ -102,40 +114,45 @@
 </div>
 
 
+<div class="block">
+    <form class="doctor-form" id="doctor-form" name="doctor-form">
+        <div class="block1">
+            <div class="col-md-6">
+                <label for="validationDefault20" class="form-label" required>Последнее место работы</label>
+                <input type="text" class="form-control" id="validationDefault20" name="lastPlaceOfWork" required>
+            </div>
+            <div class="col-md-6">
+                <label for="validationDefault21" class="form-label" required>Занимаемая должность</label>
+                <input type="text" class="form-control" id="validationDefault21" name="lastPosition" required>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" required>Опыт</span>
+                </div>
+                <input type="text" class="form-control" name="experience" required>
+                <div class="input-group-append">
+                    <span class="input-group-text">лет</span>
+                </div>
+            </div>
 
-<form class="doctor-form" id="form">
-    <div class="block1">
-        <div class="col-md-6">
-            <label for="validationDefault20" class="form-label">Последнее место работы</label>
-            <input type="text" class="form-control" id="validationDefault20" name="doctorInfo.lastPlaceOfWork" required>
-        </div>
-        <div class="col-md-6">
-            <label for="validationDefault21" class="form-label">Занимаемая должность</label>
-            <input type="text" class="form-control" id="validationDefault21" name="doctorInfo.lastPosition" required>
-        </div>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Опыт</span>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Образование</span>
+                </div>
+                <textarea class="form-control" aria-label="With textarea" name="education" required></textarea>
             </div>
-            <input type="text" class="form-control" name="doctorInfo.experience">
-            <div class="input-group-append">
-                <span class="input-group-text">лет</span>
+            <div class="col-md-4">
+                <label for="validationDefault01" class="form-label"></label>
             </div>
+            <input type="text" class="form-hidden" id="userId" name="userId" value="0" hidden>
+            <input type="text" class="form-hidden" id="id" name="id" value="0" hidden>
         </div>
-
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Образование</span>
-            </div>
-            <textarea class="form-control" aria-label="With textarea" name="doctorInfo.education"></textarea>
+        <div class="block2" name="block2">
         </div>
-        <div class="col-md-4">
-            <label for="validationDefault01" class="form-label"></label>
-            <input type="text" class="form-control" id="validationDefault01" name="rating" required value="0" hidden>
+        <div class="block3" name="block3">
         </div>
-        <input type="text" class="form-hidden" id="userId" name="userId" value="0" hidden>
-    </div>
-</form>
+    </form>
+</div>
 
 
 
@@ -143,16 +160,8 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
 <script>
-        function putButton2(){
-        document.querySelector('.form').addEventListener('submit', handleFormSubmit4);
-        }
-        function postButton1(){
-        document.querySelector('.form').addEventListener('submit', handleFormSubmit1);
-        }
-
-
-
 $(document).ready(function(){
     $.ajax({
         url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/users/eMails',
@@ -168,11 +177,52 @@ $(document).ready(function(){
 
         }
     });
+
+    $.ajax({
+        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/departments',
+        type: 'get',
+        success: function(response){
+            var len = response.length;
+            for(var i=0; i<len; i++){
+
+                var name = response[i].name;
+                var id = response[i].id;
+
+                var str ="<label class='form-check-label'><input type='checkbox' id='checkDep' name='departments' class='form-check-input' type='checkbox' value=" +
+                    id + ">" + name + "</label>";
+
+
+                $(".block3").append(str);
+            }
+
+        }
+    });
+
+    $.ajax({
+        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/specializations',
+        type: 'get',
+        success: function(response){
+            var len = response.length;
+            for(var i=0; i<len; i++){
+
+                var name = response[i].name;
+                var id = response[i].id;
+
+                var str ="<label class='form-check-label'><input type='checkbox' name='specializations' id='checkSpec' class='form-check-input' type='checkbox' value=" +
+                    id + ">" + name + "</label>";
+
+
+                $(".block2").append(str);
+            }
+
+        }
+    });
+
 });
 
         document.getElementById('exDataList').addEventListener('input', function () {
     var g = $('#exDataList').val();
-    var id = $('#datalistOptions').find('option[value="' +g + '"]').attr('data-id');
+    var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
     var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/users/' + id;
     $.ajax({
         url:  url,
@@ -183,13 +233,13 @@ $(document).ready(function(){
                     $("[name='lastPosition']").val(response.doctorInfo.lastPosition);
                     $("[name='experience']").val(response.doctorInfo.experience);
                     $("[name='education']").val(response.doctorInfo.education);
-                    $("[name='rating']").val(response.doctorInfo.rating);
                     $("[name='id']").val(response.doctorInfo.id);
             }
              else {
                     $("[class='form-control']").val(null);
                     $("[class='form-hidden']").val("0");
                     $("[class='form-select']").val(null);
+                    $("[class='form-select']").prop('checked', false);
 
             }
 
@@ -198,11 +248,33 @@ $(document).ready(function(){
         })
 });
 
+function postButton(){
+        document.querySelector('.doctor-form').addEventListener('submit', handleFormSubmit1);
+        }
+function putButton(){
+        document.querySelector('.doctor-form').addEventListener('submit', handleFormSubmit2);
+        }
 
 
         function handleFormSubmit1(event) {
-  event.preventDefault();
+        event.preventDefault();
+   var departments = $("#doctor-form input#checkDep:checked").map(function(){
+      return $(this).val();
+    }).get();
+   var specializations = $("#doctor-form input#checkSpec:checked").map(function(){
+      return $(this).val();
+    }).get();
+   const userId = $('#email-id').attr('data-id');
 
+   const data = new FormData(event.target);
+
+   const formJSON = Object.fromEntries(data.entries());
+
+   const stringJSON = "{\"lastPlaceOfWork\":\"" + formJSON.lastPlaceOfWork + "\",\"lastPosition\":\"" +
+         formJSON.lastPosition + "\",\"education\":\"" + formJSON.education + "\",\"experience\":\"" +
+         formJSON.experience + "\",\"rating\":\"0\",\"specializations\":[" + specializations + "],\"departments\":[" +
+         departments + "],\"id\":\"" + formJSON.id + "\",\"userId\":\"" + userId + "\"}";
+   const formJSON1 = JSON.parse(stringJSON);
   var g = $('#exDataList').val();
   var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
             if(id == null){
@@ -211,14 +283,14 @@ $(document).ready(function(){
   var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/doctor_info';
   $("[id='userId']").val(id);
 
-  const data = new FormData(event.target);
 
-  const formJSON = Object.fromEntries(data.entries());
                 console.log(formJSON);
+  const string = JSON.stringify(formJSON);
+                console.log(string);
                  $.ajax({
          url:  url,
-         type: 'post',
-         data: formJSON,
+         type: 'POST',
+         data: formJSON1,
          statusCode: {
          201: function() {
             alert('Доктор добавлен');
@@ -230,7 +302,7 @@ $(document).ready(function(){
     });
     }
 }
-document.getElementById('post-info').addEventListener('click', postButton1);
+document.getElementById('post-info').addEventListener('click', postButton);
 
 
 
@@ -238,17 +310,17 @@ document.getElementById('post-info').addEventListener('click', postButton1);
 
 
 
-        function handleFormSubmit4(event) {
+        function handleFormSubmit2(event) {
         event.preventDefault();
 
   var g = $('#exDataList').val();
   var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
-  var passportId = document.getElementById('passportId').value;
+  var docInfoId = document.getElementById('id').value;
             if(id == null){
                 alert("Введите e-mail пользователя")
             } else {
-  var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/doctor_info/' + passportId;
-  $("[name='passportUserId']").val(id);
+  var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/doctor_info/' + docInfoId;
+  $("[name='userId']").val(id);
 
   const data = new FormData(event.target);
 
@@ -269,7 +341,10 @@ document.getElementById('post-info').addEventListener('click', postButton1);
     });
 }
         }
-document.getElementById('put-info').addEventListener('click', putButton2);
+document.getElementById('put-info').addEventListener('click', putButton);
+
+
+
 
         </script>
 

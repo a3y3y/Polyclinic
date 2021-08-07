@@ -3,6 +3,7 @@ package by.it_academy.polyclinic.model.user_Info;
 import by.it_academy.polyclinic.model.doctor_info.DoctorInfo;
 import by.it_academy.polyclinic.model.patient_info.MedicalNote;
 import by.it_academy.polyclinic.model.patient_info.Ticket;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -31,28 +32,29 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "passport_id")
 
     private Passport passport;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "ticket_user",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "ticket_id") })
-    private List<Ticket> tickets = new ArrayList<>();
+    @JsonIgnore
+    private Set<Ticket> tickets = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "doctor_info_id")
     private DoctorInfo doctor;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "registration_id")
     private Address registrationAddress;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private Set<MedicalNote> notes;
 
     private boolean active;
@@ -69,11 +71,11 @@ public class User implements UserDetails {
         return doctor;
     }
 
-    public List<Ticket> getTickets() {
+    public Set<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
+    public void setTickets(Set<Ticket> tickets) {
         this.tickets = tickets;
     }
 
@@ -199,9 +201,6 @@ public class User implements UserDetails {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", eMail='" + eMail + '\'' +
                 ", password='" + password + '\'' +
-                ", tickets=" + tickets +
-                ", doctor=" + doctor +
-                ", registrationAddress=" + registrationAddress +
                 ", active=" + active +
                 '}';
     }

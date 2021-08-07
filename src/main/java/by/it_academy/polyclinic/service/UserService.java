@@ -22,7 +22,7 @@ public class UserService implements IUserService, UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    IUserRepository userRepository;
+    private IUserRepository userRepository;
 
     public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
@@ -60,10 +60,8 @@ public class UserService implements IUserService, UserDetailsService {
         userNew.seteMail(userNew.geteMail());
         userNew.setPassport(user.getPassport());
         userNew.setRegistrationAddress(user.getRegistrationAddress());
-        userNew.setNotes(user.getNotes());
-        userNew.setTickets(user.getTickets());
         userNew.setDoctor(user.getDoctor());
-        userNew.setId(user.getId());
+        userNew.setRoles(user.getRoles());
         User userSaved = userRepository.save(userNew);
         if(userSaved.equals(userNew)){
             return true;
@@ -79,6 +77,16 @@ public class UserService implements IUserService, UserDetailsService {
             userRepository.delete(user);
             return true;
         }
+    }
+
+    @Override
+    public List<User> getAllUsersByRole(Set<Role> roles) {
+        return userRepository.findByRolesIn(roles);
+    }
+
+    @Override
+    public Set<Integer> getAllDoctorsIds() {
+        return userRepository.findAllDoctorsIds();
     }
 
 

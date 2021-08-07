@@ -66,4 +66,9 @@ public class UserController {
         return "department";
     }
 
+    @GetMapping("cabinet/tickets")
+    public String getDoctorTickets(){
+        return "tickets";
+    }
+
 }

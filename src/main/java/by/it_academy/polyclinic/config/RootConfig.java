@@ -58,4 +58,9 @@ public class RootConfig {
     public IDepartmentService departmentService(IDepartmentRepository departmentRepository){
         return new DepartmentService(departmentRepository);
     }
+
+    @Bean
+    public ITicketService ticketService(ITicketRepository ticketRepository, IUserRepository userRepository){
+        return new TicketService(ticketRepository, userRepository);
+    }
 }

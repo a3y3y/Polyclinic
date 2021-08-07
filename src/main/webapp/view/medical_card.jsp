@@ -15,13 +15,10 @@
     <meta name="theme-color" content="#7952b3">
     <style>
         .block{
-    width:400px;
+            width:400px;
             height:200px;
-            position: fixed;
-            top: 30%;
-            left: 40%;
-            margin-top: -100px;
-            margin-left: -100px;
+            padding: 20px;
+            float: inherit;
 
         }
 
@@ -65,6 +62,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/tickets">Талоны</a>
+            </li>
         </ul>
     </div>
     <div>
@@ -88,7 +88,7 @@
 </div>
 
 
-<sec:authorize access="hasRole('DOCTOR')">
+
     <div class="block">
         <form class="form">
             <div class="form-floating">
@@ -115,7 +115,7 @@
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInput3" name="description" required>
+                <textarea type="text" class="form-control" id="floatingInput3" name="description" required></textarea>
                 <label for="floatingInput3">Описание</label>
             </div>
             <label for="exampleDataList" class="form-label">Имя пациента</label>
@@ -127,7 +127,8 @@
             <p class="mt-5 mb-3 text-muted">© 2021</p>
         </form>
     </div>
-</sec:authorize>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -157,6 +158,22 @@ $(document).ready(function(){
                     "</tr>";
 
                 $("#medical-note-table tbody").append(tr_str);
+            }
+        }
+    });
+
+    $.ajax({
+        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/passports',
+        type: 'get',
+        success: function(response){
+            var len = response.length;
+            for(var i=0; i<len; i++){
+                var lastName = response[i].lastName;
+                var firstName = response[i].firstName;
+                var number = response[i].number;
+
+                 var str = "<option id=passport value=" + number + ">" + lastName + " " + firstName + "</option>";
+                $("#datalistOptions").append(str);
             }
         }
     });

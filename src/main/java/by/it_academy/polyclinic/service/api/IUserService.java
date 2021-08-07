@@ -1,10 +1,12 @@
 package by.it_academy.polyclinic.service.api;
 
 import by.it_academy.polyclinic.model.user_Info.Passport;
+import by.it_academy.polyclinic.model.user_Info.Role;
 import by.it_academy.polyclinic.model.user_Info.User;
 
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface IUserService {
@@ -16,6 +18,8 @@ public interface IUserService {
     User addUser(User user);
     boolean update(User user, int id);
     boolean delete(int id);
+    List<User> getAllUsersByRole(Set<Role> roles);
+    Set<Integer> getAllDoctorsIds();
 
 }
 

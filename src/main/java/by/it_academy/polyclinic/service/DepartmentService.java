@@ -27,8 +27,6 @@ public class DepartmentService implements IDepartmentService {
     @Override
     public boolean update(Department department, int id) {
         Department departmentNew = departmentRepository.findById(id);
-        departmentNew.setId(department.getId());
-        departmentNew.setName(department.getName());
         departmentNew.setDescription(department.getDescription());
         Department departmentSaved = departmentRepository.save(departmentNew);
         if(departmentSaved.equals(departmentNew)){
@@ -44,5 +42,16 @@ public class DepartmentService implements IDepartmentService {
     @Override
     public Department add(Department department) {
         return departmentRepository.save(department);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        Department department = departmentRepository.findById(id);
+        if(department == null){
+            return false;
+        } else {
+            departmentRepository.delete(department);
+            return true;
+        }
     }
 }

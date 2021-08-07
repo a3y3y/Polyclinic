@@ -10,4 +10,5 @@ public interface ISpecializationService {
     boolean update(Specialization specialization, int id);
     Specialization getByName(String name);
     Specialization add(Specialization specialization);
+    boolean delete(int id);
 }

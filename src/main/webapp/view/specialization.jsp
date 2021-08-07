@@ -77,6 +77,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/tickets">Талоны</a>
+            </li>
         </ul>
     </div>
     <div>
@@ -139,11 +142,11 @@ $(document).ready(function(){
                         <tr>\
                             <td class="name">' + specialization.name + '</td>\
                             <td class="id" hidden>' + specialization.id + '</td>\
-                            <td><textarea rows="4" type="text" class="form-control">"' + specialization.description + '"</textarea></td>\
+                            <td><textarea rows="4" id="formId" type="text" class="form-control">"' + specialization.description + '"</textarea></td>\
                             <td>\
                                 <div class="btn">\
-                                <button onclick="update()" class="btn btn-primary btn-sm">Обновить</button>\
-                                <button class="btn btn-outline-primary btn-sm">Удалить</button>\
+                                <button id="update-button" type="button" class="btn btn-primary">Обновить</button>\
+                                <button id="delete-button" type="button" class="btn btn-outline-primary btn-sm">Удалить</button>\
                                 </div>\
                             </td>\
                         </tr>\
@@ -181,73 +184,45 @@ document.getElementById('post').addEventListener('click', postButton);
 
 
 
-   function update() {
-
-
-        var rowEl = $(this).closest('tr');
-        var id = rowEl.find('.id').text();
-        var newName = rowEl.find('.form-control').text();
-
-        $.ajax({
-            url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/specializations' + id,
-            method: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify({ newName: newName }),
-            success: function(response) {
-                console.log(response);
-            }
-        });
-    }
-
-    $('table').on('click', '.btn btn-outline-primary btn-sm', function() {
-        var rowEl = $(this).closest('tr');
-        var id = rowEl.find('.id').text();
-
-        $.ajax({
-            url: '/products/' + id,
-            method: 'DELETE',
-            contentType: 'application/json',
-            success: function(response) {
-                console.log(response);
-                $('#get-button').click();
-            }
-        });
-    });
-
-
-
-        $('table').on('click', '.update-button', function (event) {
+   $('table').on('click', '#update-button', function(event) {
         event.preventDefault();
 
-  var g = $('#exDataList').val();
-  var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
-  var passportId = document.getElementById('passportId').value;
-            if(id == null){
-                alert("Введите e-mail пользователя")
-            } else {
-  var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/doctor_info/' + passportId;
-  $("[name='passportUserId']").val(id);
+        var rowEl = $(this).closest('tr');
+        var id = rowEl.find('.id').text();
+        var newDesc = rowEl.find('#formId').val();
+        const formJSON = ({description: newDesc});
 
-  const data = new FormData(event.target);
-
-  const formJSON = Object.fromEntries(data.entries());
-
-  const stringJson = JSON.stringify(formJSON);
-                $.ajax({
-        contentType: 'application/json',
-        url:  url,
-        type: 'put',
-        dataType: "json",
-        data: stringJson,
-        statusCode: {
-         200: function() {
-            alert('Информация обновлена');
-         }
-        }
-    });
-}
+        $.ajax({
+            url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/specializations/' + id,
+            method: 'PUT',
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify(formJSON),
+            statusCode: {
+                200: function() {
+                    alert('Обновлено');
+                    window.location.reload();
+                    }
+                }
         });
+    });
 
+    $('table').on('click', '#delete-button', function() {
+        var rowEl = $(this).closest('tr');
+        var id = rowEl.find('.id').text();
+        var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/specializations/' + id;
+
+        $.ajax({
+                url: url,
+                type: 'delete',
+                statusCode: {
+                    200: function() {
+                        alert("Успешно удалено");
+                        window.location.reload();
+                    }
+                }
+            });
+    });
 
         </script>
 

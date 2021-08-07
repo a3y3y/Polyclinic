@@ -38,4 +38,9 @@ public class DoctorInfoService implements IDoctorInfoService {
             return true;
         } else return false;
     }
+
+    @Override
+    public DoctorInfo add(DoctorInfo doctorInfo) {
+        return doctorInfoRepository.save(doctorInfo);
+    }
 }

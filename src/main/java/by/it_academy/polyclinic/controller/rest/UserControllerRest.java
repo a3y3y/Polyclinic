@@ -28,6 +28,7 @@ public class UserControllerRest {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+
     @GetMapping("/eMails")
     public ResponseEntity<List<User>> readAllEmails() {
         List<User> usersEmails = new ArrayList<>();
