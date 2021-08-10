@@ -1,7 +1,7 @@
-<!doctype html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!doctype html>
 
 <html lang="ru">
 <head>
@@ -31,14 +31,12 @@
 <div class="block">
     <form action="${pageContext.request.contextPath}/signIn" method="post">
 
-        <c:choose>
-            <c:when test="${error}">
-                <p style="color:red;">Не верный e-mail или пароль</p>
-            </c:when>
-            <c:otherwise>
-                <h1 class="h3 mb-3 fw-normal">Введи в меня</h1>
-            </c:otherwise>
-        </c:choose>
+
+        <c:if test="${param.auth eq 'failure'}">
+            <div class="error">
+                <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+            </div>
+        </c:if>
         <div class="form-floating">
             <input type="email" class="form-control" id="floatingInput" name="username" >
             <label for="floatingInput">Email адрес</label>

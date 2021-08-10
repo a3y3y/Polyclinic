@@ -2,99 +2,134 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html lang="ru">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Вход</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta name="theme-color" content="#7952b3">
 
-    <sec:authentication var="user" property="principal"/>
+    <sec:authentication var="user" property="principal" />
     <style>
-        label{
-            display:block;
-            text-align: left;
-        }
-        .block2{
-            float: right;
-            padding: 20px;
+                label {
+                    display: block;
+                    text-align: left;
+                }
 
-        }
-        .block3{
-            float: right;
-            padding: 20px;
+                .block2 {
+                    float: right;
+                    padding: 20px;
+                }
 
-        }
-        .block1{
-            padding: 20px;
-            width: 50%;
-            float: left;
+                .block3 {
+                    float: right;
+                    padding: 20px;
+                }
 
-        }
-        .input-group{
-            float: left;
-            padding: 20px;
+                .block1 {
+                    padding: 20px;
+                    width: 50%;
+                    float: left;
+                }
 
-        }
-        .col-md-4{
-            float: left;
-            padding: 20px;
-        }
-        .col-md-6{
-            float: left;
-            padding: 20px;
-        }
-        .col-md-3{
-            float: right;
-            padding: 20px;
-        }
-    </style>
+                .input-group {
+                    float: left;
+                    padding: 20px;
+                }
+
+                .col-md-4 {
+                    float: left;
+                    padding: 20px;
+                }
+
+                .col-md-6 {
+                    float: left;
+                    padding: 20px;
+                }
+
+                .col-md-3 {
+                    float: right;
+                    padding: 20px;
+                }
+
+            </style>
 
 </head>
+
 <body class="text-center">
 <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/">На главную</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/medical_card">Мед. карта</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Анализы</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Прививки</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Личные данные</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/users">Пользователи</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="${pageContext.request.contextPath}/cabinet/doctor">Врачи</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/specializations">Специальности</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/tickets">Талоны</a>
-            </li>
+            <sec:authorize access="hasAnyAuthority('PATIENT', 'DOCTOR', 'REGISTRATION_MANAGER')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/medical_card">Мед. карта</a>
+                </li>
+            </sec:authorize>
+
+
+            <sec:authorize access="hasAuthority('PATIENT')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/my_tickets">Мои талоны</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/ticket_order_patient">Заказ талона</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyAuthority('PATIENT', 'DOCTOR')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/users">Личные данные</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/redact_user">Редактировать профиль</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyAuthority('DOCTOR', 'REGISTRATION_MANAGER')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/ticket_order">Заказ талона</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAuthority('REGISTRATION_MANAGER')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/tickets">Новые талоны</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyAuthority('ADMIN', 'REGISTRATION_MANAGER')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="${pageContext.request.contextPath}/cabinet/doctor">Врачи</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/specializations">Специальности</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAuthority('ADMIN')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/change_user_role">Редакторовать профили</a>
+                </li>
+
+            </sec:authorize>
         </ul>
     </div>
     <div>
-        <a><sec:authentication property="principal.username" /></a>
+        <a>
+            <sec:authentication property="principal.username" />
+        </a>
+        <a hidden id="principalId">
+            <sec:authentication property="principal.id" />
+        </a>
+        <a hidden id="principalRole">
+            <sec:authentication property="principal.roles" />
+        </a>
     </div>
 </nav>
 
@@ -107,8 +142,7 @@
 </div>
 
 <div class="col-md-4">
-    <input class="form-control1" list="datalistOptions" id="exDataList" placeholder="e-mail пользователя" name="eMail"
-           required>
+    <input class="form-control1" list="datalistOptions" id="exDataList" placeholder="Паспортные данные" name="eMail" required>
     <datalist id="datalistOptions">
     </datalist>
 </div>
@@ -156,197 +190,218 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
 <script>
-$(document).ready(function(){
-    $.ajax({
-        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/users/eMails',
-        type: 'get',
-        success: function(response){
-            var len = response.length;
-            for(var i=0; i<len; i++){
-                var eMail = response[i].eMail;
-                var id = response[i].id;
-                var str = "<option id=email-id data-id=" + id + " value=" + eMail + "></option>";
-                $("#datalistOptions").append(str);
-            }
+                $(document).ready(function() {
+                    $.ajax({
+                        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/passports/doctors_patients',
+                        type: 'get',
+                        success: function(response) {
+                            var len = response.length;
+                            for (var i = 0; i < len; i++) {
+                                var passportNumber = response[i].passportNumber;
+                                var lastName = response[i].lastName;
+                                var firstName = response[i].firstName;
+                                var id = response[i].id;
+                                var str = "<option id=email-id data-id=" + id + " value=" + passportNumber + ">" + lastName + " " + firstName + "</option>";
+                                $("#datalistOptions").append(str);
+                            }
 
-        }
-    });
+                        }
+                    });
 
-    $.ajax({
-        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/departments',
-        type: 'get',
-        success: function(response){
-            var len = response.length;
-            for(var i=0; i<len; i++){
+                    $(document).ready(function() {
+                        $('#checkBtn').click(function() {
 
-                var name = response[i].name;
-                var id = response[i].id;
+                        });
+                    });
 
-                var str ="<label class='form-check-label'><input type='checkbox' id='checkDep' name='departments' class='form-check-input' type='checkbox' value=" +
-                    id + ">" + name + "</label>";
+                    $.ajax({
+                        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/departments',
+                        type: 'get',
+                        success: function(response) {
+                            var len = response.length;
+                            for (var i = 0; i < len; i++) {
 
+                                var name = response[i].name;
+                                var id = response[i].id;
 
-                $(".block3").append(str);
-            }
-
-        }
-    });
-
-    $.ajax({
-        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/specializations',
-        type: 'get',
-        success: function(response){
-            var len = response.length;
-            for(var i=0; i<len; i++){
-
-                var name = response[i].name;
-                var id = response[i].id;
-
-                var str ="<label class='form-check-label'><input type='checkbox' name='specializations' id='checkSpec' class='form-check-input' type='checkbox' value=" +
-                    id + ">" + name + "</label>";
+                                var str = "<label class='form-check-label'><input type='checkbox' id='checkDep' name='departments' class='form-check-input' type='checkbox' value=" +
+                                    id + ">" + name + "</label>";
 
 
-                $(".block2").append(str);
-            }
+                                $(".block3").append(str);
+                            }
 
-        }
-    });
+                        }
+                    });
 
-});
+                    $.ajax({
+                        url: 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/specializations',
+                        type: 'get',
+                        success: function(response) {
+                            var len = response.length;
+                            for (var i = 0; i < len; i++) {
 
-        document.getElementById('exDataList').addEventListener('input', function () {
-    var g = $('#exDataList').val();
-    var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
-    var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/users/' + id;
-    $.ajax({
-        url:  url,
-        type: 'get',
-        success: function(response){
-            if(response.doctorInfo != null){
-                    $("[name='lastPlaceOfWork']").val(response.doctorInfo.lastPlaceOfWork);
-                    $("[name='lastPosition']").val(response.doctorInfo.lastPosition);
-                    $("[name='experience']").val(response.doctorInfo.experience);
-                    $("[name='education']").val(response.doctorInfo.education);
-                    $("[name='id']").val(response.doctorInfo.id);
-            }
-             else {
-                    $("[class='form-control']").val(null);
-                    $("[class='form-hidden']").val("0");
-                    $("[class='form-select']").val(null);
-                    $("[class='form-select']").prop('checked', false);
+                                var name = response[i].name;
+                                var id = response[i].id;
 
-            }
+                                var str = "<label class='form-check-label'><input type='checkbox' name='specializations' id='checkSpec' class='form-check-input' type='checkbox' value=" +
+                                    id + ">" + name + "</label>";
 
+
+                                $(".block2").append(str);
+                            }
+
+                        }
+                    });
+
+                });
+
+                document.getElementById('exDataList').addEventListener('input', function() {
+
+
+                    var g = $('#exDataList').val();
+                    var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
+                    var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/users/' + id;
+                    $.ajax({
+                        url: url,
+                        type: 'get',
+                        success: function(response) {
+                            if (response.doctorInfo != null) {
+                                $("[name='lastPlaceOfWork']").val(response.doctorInfo.lastPlaceOfWork);
+                                $("[name='lastPosition']").val(response.doctorInfo.lastPosition);
+                                $("[name='experience']").val(response.doctorInfo.experience);
+                                $("[name='education']").val(response.doctorInfo.education);
+                                $("[name='id']").val(response.doctorInfo.id);
+                            } else {
+                                $("[class='form-control']").val(null);
+                                $("[class='form-hidden']").val("0");
+                                $("[class='form-select']").val(null);
+                                $("[class='form-select']").prop('checked', false);
+
+                            }
+
+                        }
+
+                    })
+                });
+
+                function postButton() {
+                    document.querySelector('.doctor-form').addEventListener('submit', handleFormSubmit1);
                 }
 
-        })
-});
-
-function postButton(){
-        document.querySelector('.doctor-form').addEventListener('submit', handleFormSubmit1);
-        }
-function putButton(){
-        document.querySelector('.doctor-form').addEventListener('submit', handleFormSubmit2);
-        }
+                function putButton() {
+                    document.querySelector('.doctor-form').addEventListener('submit', handleFormSubmit2);
+                }
 
 
-        function handleFormSubmit1(event) {
-        event.preventDefault();
-   var departments = $("#doctor-form input#checkDep:checked").map(function(){
-      return $(this).val();
-    }).get();
-   var specializations = $("#doctor-form input#checkSpec:checked").map(function(){
-      return $(this).val();
-    }).get();
-   const userId = $('#email-id').attr('data-id');
+                function handleFormSubmit1(event) {
+                    event.preventDefault();
+                    checked1 = $("input[name=departments]:checked").length;
+                    checked2 = $("input[name=specializations]:checked").length;
 
-   const data = new FormData(event.target);
+                    if (!checked1) {
+                        alert("Выберите отдел.");
+                        return false;
+                    }
+                    if (!checked2) {
+                        alert("Выберите специальность.");
+                        return false;
+                    }
+                    var departments = $("#doctor-form input#checkDep:checked").map(function() {
+                        return $(this).val();
+                    }).get();
+                    var specializations = $("#doctor-form input#checkSpec:checked").map(function() {
+                        return $(this).val();
+                    }).get();
 
-   const formJSON = Object.fromEntries(data.entries());
-
-   const stringJSON = "{\"lastPlaceOfWork\":\"" + formJSON.lastPlaceOfWork + "\",\"lastPosition\":\"" +
-         formJSON.lastPosition + "\",\"education\":\"" + formJSON.education + "\",\"experience\":\"" +
-         formJSON.experience + "\",\"rating\":\"0\",\"specializations\":[" + specializations + "],\"departments\":[" +
-         departments + "],\"id\":\"" + formJSON.id + "\",\"userId\":\"" + userId + "\"}";
-   const formJSON1 = JSON.parse(stringJSON);
-  var g = $('#exDataList').val();
-  var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
-            if(id == null){
-                alert("Введите e-mail пользователя")
-            } else {
-  var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/doctor_info';
-  $("[id='userId']").val(id);
+                    var g = $('#exDataList').val();
+                    var patId = $('#datalistOptions').find('option[value="' + g + '"]');
+                    var userId = patId.attr('data-id');
 
 
-                console.log(formJSON);
-  const string = JSON.stringify(formJSON);
-                console.log(string);
-                 $.ajax({
-         url:  url,
-         type: 'POST',
-         data: formJSON1,
-         statusCode: {
-         201: function() {
-            alert('Доктор добавлен');
-         },
-         406: function() {
-             alert('Доктор с такой информацией уже существует')
-         }
-        }
-    });
-    }
-}
-document.getElementById('post-info').addEventListener('click', postButton);
+                    const data = new FormData(event.target);
+
+                    const formJSON = Object.fromEntries(data.entries());
+
+                    const stringJSON = "{\"lastPlaceOfWork\":\"" + formJSON.lastPlaceOfWork + "\",\"lastPosition\":\"" +
+                        formJSON.lastPosition + "\",\"education\":\"" + formJSON.education + "\",\"experience\":\"" +
+                        formJSON.experience + "\",\"rating\":\"0\",\"specializations\":[" + specializations + "],\"departments\":[" +
+                        departments + "],\"id\":\"" + formJSON.id + "\",\"userId\":\"" + userId + "\"}";
+                    const formJSON1 = JSON.parse(stringJSON);
+                    var g = $('#exDataList').val();
+                    var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
+                    if (id == null) {
+                        alert("Введите e-mail пользователя")
+                    } else {
+                        var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/doctor_info';
+                        $("[id='userId']").val(id);
 
 
 
+                        const string = JSON.stringify(formJSON);
 
-
-
-
-        function handleFormSubmit2(event) {
-        event.preventDefault();
-
-  var g = $('#exDataList').val();
-  var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
-  var docInfoId = document.getElementById('id').value;
-            if(id == null){
-                alert("Введите e-mail пользователя")
-            } else {
-  var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/doctor_info/' + docInfoId;
-  $("[name='userId']").val(id);
-
-  const data = new FormData(event.target);
-
-  const formJSON = Object.fromEntries(data.entries());
-
-  const stringJson = JSON.stringify(formJSON);
-                $.ajax({
-        contentType: 'application/json',
-        url:  url,
-        type: 'put',
-        dataType: "json",
-        data: stringJson,
-        statusCode: {
-         200: function() {
-            alert('Информация обновлена');
-         }
-        }
-    });
-}
-        }
-document.getElementById('put-info').addEventListener('click', putButton);
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: formJSON1,
+                            statusCode: {
+                                201: function() {
+                                    alert('Доктор добавлен');
+                                },
+                                406: function() {
+                                    alert('Доктор с такой информацией уже существует')
+                                }
+                            }
+                        });
+                    }
+                }
+                document.getElementById('post-info').addEventListener('click', postButton);
 
 
 
 
-        </script>
+
+
+
+                function handleFormSubmit2(event) {
+                    event.preventDefault();
+
+                    var g = $('#exDataList').val();
+                    var id = $('#datalistOptions').find('option[value="' + g + '"]').attr('data-id');
+                    var docInfoId = document.getElementById('id').value;
+                    if (id == null) {
+                        alert("Введите e-mail пользователя")
+                    } else {
+                        var url = 'http://localhost:8080/polyclinic-0.0.1-SNAPSHOT/doctor_info/' + docInfoId;
+                        $("[name='userId']").val(id);
+
+                        const data = new FormData(event.target);
+
+                        const formJSON = Object.fromEntries(data.entries());
+
+                        const stringJson = JSON.stringify(formJSON);
+                        $.ajax({
+                            contentType: 'application/json',
+                            url: url,
+                            type: 'put',
+                            dataType: "json",
+                            data: stringJson,
+                            statusCode: {
+                                200: function() {
+                                    alert('Информация обновлена');
+                                }
+                            }
+                        });
+                    }
+                }
+                document.getElementById('put-info').addEventListener('click', putButton);
+
+            </script>
 
 </body>
+
 </html>

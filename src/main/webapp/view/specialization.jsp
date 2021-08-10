@@ -44,46 +44,76 @@
 <body class="text-center">
 <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/">На главную</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/medical_card">Мед. карта</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Анализы</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Прививки</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Личные данные</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/users">Пользователи</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/doctor">Врачи</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="${pageContext.request.contextPath}/cabinet/specializations">Специальности</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/tickets">Талоны</a>
-            </li>
+            <sec:authorize access="hasAnyAuthority('PATIENT', 'DOCTOR', 'REGISTRATION_MANAGER')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/medical_card">Мед. карта</a>
+                </li>
+            </sec:authorize>
+
+
+            <sec:authorize access="hasAuthority('PATIENT')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/my_tickets">Мои талоны</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/ticket_order_patient">Заказ талона</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyAuthority('PATIENT', 'DOCTOR')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/users">Личные данные</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/redact_user">Редактировать профиль</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyAuthority('DOCTOR', 'REGISTRATION_MANAGER')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/ticket_order">Заказ талона</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAuthority('REGISTRATION_MANAGER')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/tickets">Новые талоны</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyAuthority('ADMIN', 'REGISTRATION_MANAGER')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/validate">Валидация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/doctor">Врачи</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="${pageContext.request.contextPath}/cabinet/specializations">Специальности</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/departments">Отделения</a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAuthority('ADMIN')">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cabinet/change_user_role">Редакторовать профили</a>
+                </li>
+
+            </sec:authorize>
         </ul>
     </div>
     <div>
-        <a><sec:authentication property="principal.username" /></a>
+        <a>
+            <sec:authentication property="principal.username" />
+        </a>
+        <a hidden id="principalId">
+            <sec:authentication property="principal.id" />
+        </a>
+        <a hidden id="principalRole">
+            <sec:authentication property="principal.roles" />
+        </a>
     </div>
 </nav>
 
@@ -142,7 +172,7 @@ $(document).ready(function(){
                         <tr>\
                             <td class="name">' + specialization.name + '</td>\
                             <td class="id" hidden>' + specialization.id + '</td>\
-                            <td><textarea rows="4" id="formId" type="text" class="form-control">"' + specialization.description + '"</textarea></td>\
+                            <td><textarea rows="4" id="formId" type="text" class="form-control">' + specialization.description + '</textarea></td>\
                             <td>\
                                 <div class="btn">\
                                 <button id="update-button" type="button" class="btn btn-primary">Обновить</button>\
